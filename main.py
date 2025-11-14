@@ -1,4 +1,5 @@
 from funktionen import *
+import time 
 
 while True:
     print("") 
@@ -18,12 +19,16 @@ while True:
 
     if auswahl == 1:
         dicht_rechner()
+        time.sleep(3)
 
     elif auswahl == 2:
         druck_rechner()
+        time.sleep(3)
 
     elif auswahl == 3:
         waerme_rechner()
+        time.sleep(3)
 
     else:
         print("Menu noch nicht verfügbar! :(")
+        time.sleep(3)

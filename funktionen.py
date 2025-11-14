@@ -1,30 +1,45 @@
+import time
 
 def dicht_rechner():
     print("Die Formel lautet:  p = m / V ")
-    gegeben = input("Was ist gegeben? (z.B. 'm und V'): ").lower()
-    gesucht = input("Was ist gesucht?: ").lower()
+    print("------------------------")
+    ges = input("Was ist gesucht? (p, m oder V): ").strip().lower()
 
-    if gesucht == "p" and "m"in gegeben and "V"in gegeben:
-        m = float(input("Was ist die Masse m in kg?: ")).lower()
-        V = float(input("Was ist das Volumen V in m³?: ")).lower()
-        rho = m / V
-        print(f"→ Die dichte beträgt p = {rho:.3f} kg/m³")
+    promts = {
+        "m": "Masse m (kg): ",
+        "p": "Dichte p (kg/m³): ",
+        "V": "Volumen V (m³):"
+    }
+    def get(var):
+        return float(input(promts [var]))
     
-    elif gesucht == "m" and "p"in gegeben and "V"in gegeben:
-        rho = float(input("Was ist die Dichte p in kg/m³?: "))
-        V = float(input("Was ist das Volumen V in m³?: "))
+    if ges == "m":
+        rho = get("p")
+        V = get("V")
         m = rho * V
-        print(f"→ Die Masse m beträgt {m:.0f} kg")
-    
-    elif gesucht == "V" and "p"in gegeben and "m" in gegeben:
-        m = float(input("Was ist die Masse m?: "))
-        rho = float(input("Was ist die Dichte p?: "))
-        V = m / rho
-        print(f"→ Das Volumen V beträgt {V:.3f} m³")
+        print(f"m = {rho} * {V}")
+        print("")
+        print(f"m = {m:1f} kg")
+
+    elif ges == "p":
+        m = get("m")
+        V = get("V")
+        rho = m / V
+        print(f"p = {m} / {V}")
+        print("")
+        print(f"p = {rho:3f} kg/m³")
+
+    elif ges == "v":
+        rho = get("p")
+        m = get("m")
+        V = rho / m
+        print(f"V = {rho} / {m}")
+        print("")
+        print(f"V = {V:3f} m³")
 
     else:
         print("Ein Fehler ist aufgetreten, versuch es erneut!")
-
+        time.sleep(3)
 
 def druck_rechner():
     print("Die Formel lautet: p = F/A")
