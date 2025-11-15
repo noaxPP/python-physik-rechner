@@ -43,26 +43,40 @@ def dicht_rechner():
 
 def druck_rechner():
     print("Die Formel lautet: p = F/A")
-    geg = input("Was ist gegeben (z.B. 'F und A')?: ").lower()
-    ges = input("Was ist gesucht (z.B. p, F oder A)?: ").lower()
+    print("---------------------------")
+    ges = input("Was ist gesucht (p, F oder A)?: ").strip().lower()
 
-    if ges == "p" and "f"in geg and "a"in geg:
-        A = float(input("Was ist die Fläche m²?: "))
-        F = float(input("Was ist die Kraft in N?: "))
-        p = F/A
-        print(f"Der Druck p beträgt {p:.0} N")
-    
-    elif ges == "f" and "p"in geg and "a"in geg:
-        A = float(input("Was ist die Fläche A in m²?: "))
-        p = float(input("Was ist der Druck p in Pa?: "))
-        F = p * A
-        print(f"Die Kraft F beträgt {F:.3f} N")
-    
-    elif ges == "a"and "p"in geg and "f"in geg:
-        p = float(input("Was ist der Druck p in Pa?: "))
-        F = float(input("Was ist die Kraft f in N?:"))
+    promts = {
+        "p": "Druck p (Pa): ",
+        "F": "Kraft F (N): ",
+        "A": "Fläche A (m²): "
+    }
+    def get(var):
+        return float(input (promts [var]))
+
+    if ges == "p":
+        F = get("F")
+        A = get("A")
+        p = A/F
+        print(f"p = {F} / {A}")
+        print("")
+        print(f"p = {p:.3f} Pa")
+
+    elif ges == "f":
+        p = get("p")
+        A = get("A")
+        F = A * p
+        print(f"F = {p} * {A}")
+        print("")
+        print(f"F = {F:.3f} N")
+
+    elif ges == "a":
+        F = get("F")
+        p = get("p")
         A = p * F
-        print(f"Die Fläche A beträgt {A:.0f} m2.")
+        print(f"A = {p} * {F}")
+        print("")
+        print(f"A = {A:.3f} m²")
 
     else:
         print("Ein Fehler ist aufgetreten versuch es erneut!")
@@ -70,7 +84,7 @@ def druck_rechner():
 def waerme_rechner():
     print("Formel: Q = c * m * ΔT")
     print("Gesucht: Q, m, c oder ΔT\n")
-
+    
     # Typische spezifische Wärmekapazitäten in J/(kg*K)
     c_werte = {
         "Wasser": 4180,
