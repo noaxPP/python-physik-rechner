@@ -148,3 +148,144 @@ def waerme_rechner():
     else:
         print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")
 
+def schmelz_rechner():
+    print("Formel: Qs = qs ⋅ m ")
+    print("Gesucht: Qs, m oder qs\n")
+    print("")
+    ges = input("Was ist gesucht? (Qs, m oder qs): ").strip()
+
+    promts = {
+        "Qs": "Schmelzwärme Qs (J): ",
+        "m": "Masse m (kg): ",
+        "qs": "spezifische Schmelzwärme qs (J/kg): "
+    }
+
+    def get(var):
+        return float(input(promts[var]))
+    
+    if ges == "Qs":
+        qs = get("qs")
+        m = get("m")
+        Qs = qs * m
+        print(f"Qs = {qs} * {m}")
+        print(f"Qs = {Qs:.2f} J")
+
+    elif ges == "m":
+        Qs = get("Qs")
+        qs = get("qs")
+        m = Qs / qs
+        print(f"m = {Qs} / {qs}")
+        print(f"m = {m:.4f} kg")
+
+    elif ges == "qs":
+        Qs = get("Qs")
+        m = get("m")
+        qs = Qs / m
+        print(f"qs = {Qs} / {m}")
+        print(f"qs = {qs:.2f} J/kg")
+    
+    else:
+        print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")
+
+def verdampfungs_rechner():
+    print("Formel: Qv = qv * m")
+    print("Gesucht: Qv, m oder qv\n")
+    print("")
+    ges = input("Was ist gesucht? (Qv, m oder qv): ").strip()
+
+    promts = {
+        "Qv": "Verdampfungswärme Qv (J): ",
+        "m": "Masse m (kg): ",
+        "qv": "spezifische Verdampfungswärme qv (J/kg): "
+    }
+
+    def get(var):
+        return float(input(promts[var]))
+    
+    if ges == "Qv":
+        qv = get("qv")
+        m = get("m")
+        Qv = qv * m
+        print(f"Qv = {qv} * {m}")
+        print(f"Qv = {Qv:.2f} J")
+
+    elif ges == "m":
+        Qv = get("Qv")
+        qv = get("qv")
+        m = Qv / qv
+        print(f"m = {Qv} / {qv}")
+        print(f"m = {m:.4f} kg")
+
+    elif ges == "qv":
+        Qv = get("Qv")
+        m = get("m")
+        qv = Qv / m
+        print(f"qv = {Qv} / {m}")
+        print(f"qv = {qv:.2f} J/kg")
+
+    else:
+        print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")
+
+def dampferwaermung_rechner():
+    print("Formel: Q = c * m * ΔT")
+    print("Gesucht: Q, m, c oder ΔT")
+
+    # Typische spezifische Wärmekapazitäten von Dämpfen in J/(kg*K)
+    c_werte = {
+        "Wasserdampf": 2010,
+        "Luft": 1000,
+        "Stickstoff-Dampf": 1040,
+        "Sauerstoff-Dampf": 918,
+        "Kohlendioxid-Dampf": 839,
+        "Wasserstoff-Dampf": 14300,
+        "Helium-Dampf": 5193
+    }
+    print("Typische Werte für c [J/(kg*K)]:")
+    for stoff, wert in c_werte.items():
+        print(f" {stoff:<15} = {wert}")
+    print("")
+    ges = input("Was ist gesucht? (Q, m, c oder ΔT -> t): ").strip().lower()
+    
+    promts = {
+        "q": "Wärmeenergie Q (J): ",
+        "m": "Masse m (kg): ",
+        "c": "spezifische Wärmekapazität c (J/(kg*K)): ",
+        "t": "Temperaturänderung ΔT (K oder °C): "
+    }
+    def get(var):
+        return float(input(promts[var]))
+    
+    if ges == "q":
+        c = get("c")
+        m = get("m")
+        dT = get("t")
+        Q = c * m * dT
+        print(f"Q = {c} * {m} * {dT}")
+        print(f"Q = {Q:.2f} J")
+
+    elif ges == "m":
+        Q = get("q")
+        c = get("c")
+        dT = get("t")
+        m = Q / (c * dT)
+        print(f"m = {Q} / ({c} * {dT})")
+        print(f"m = {m:.4f} kg")
+
+    elif ges == "c":
+        Q = get("q")
+        m = get("m")
+        dT = get("t")
+        c = Q / (m * dT)
+        print(f"c = {Q} / ({m} * {dT})")
+        print(f"c = {c:.2f} J/(kg*K)")
+
+    elif ges in ("t", "Δt", "dt"):
+        Q = get("q")
+        m = get("m")
+        c = get("c")
+        dT = Q / (m * c)
+        print(f"ΔT = {Q} / ({m} * {c})")
+        print(f"ΔT = {dT:.2f} K")
+
+    else:
+        print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")

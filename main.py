@@ -11,7 +11,10 @@ while True:
     1. Dichte
     2. Druck
     3. Wärme
-    4. ...
+    4. Spezifische Schmelzwärme
+    5. Spezifische Verdampfungswärme
+    6. Dampferwärmung
+    7. ...
     '''
     )
 
@@ -27,6 +30,18 @@ while True:
 
     elif auswahl == 3:
         waerme_rechner()
+        time.sleep(3)
+    
+    elif auswahl == 4:
+        schmelz_rechner()
+        time.sleep(3)
+
+    elif auswahl == 5:
+        verdampfungs_rechner()
+        time.sleep(3)
+
+    elif auswahl == 6:
+        dampferwaermung_rechner()
         time.sleep(3)
 
     else:
