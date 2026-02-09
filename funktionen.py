@@ -1,17 +1,28 @@
 import time
 
+def kmh_to_ms(v):
+    return v / 3.6
+
+def division_durch_null(name, wert):
+    if wert == 0:
+        print(f"{name} darf nicht 0 sein!")
+    return True
+
+def fehler():
+    print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")
+
 def dicht_rechner():
     print("Die Formel lautet:  p = m / V ")
     print("------------------------")
     ges = input("Was ist gesucht? (p, m oder V): ").strip().lower()
 
-    promts = {
+    prompts = {
         "m": "Masse m (kg): ",
         "p": "Dichte p (kg/m³): ",
         "V": "Volumen V (m³):"
     }
     def get(var):
-        return float(input(promts [var]))
+        return float(input(prompts [var]))
     
     if ges == "m":
         rho = get("p")
@@ -35,7 +46,7 @@ def dicht_rechner():
         print(f"V = {V:3f} m³")
 
     else:
-        print("Ein Fehler ist aufgetreten, versuch es erneut!")
+        fehler()
         time.sleep(3)
 
 def druck_rechner():
@@ -43,13 +54,13 @@ def druck_rechner():
     print("---------------------------")
     ges = input("Was ist gesucht (p, F oder A)?: ").strip().lower()
 
-    promts = {
+    prompts = {
         "p": "Druck p (Pa): ",
         "F": "Kraft F (N): ",
         "A": "Fläche A (m²): "
     }
     def get(var):
-        return float(input (promts [var]))
+        return float(input (prompts [var]))
 
     if ges == "p":
         F = get("F")
@@ -73,7 +84,7 @@ def druck_rechner():
         print(f"A = {A:.3f} m²")
 
     else:
-        print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")
+       fehler()
 
 def waerme_rechner():
     print("Formel: Q = c * m * ΔT")
@@ -140,21 +151,21 @@ def waerme_rechner():
         print(f"ΔT = {dT:.2f} K")
 
     else:
-        print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")
+        fehler()
 
 def schmelz_rechner():
     print("Formel: Qs = qs ⋅ m ")
     print("------------------------\n")
     ges = input("Was ist gesucht? (Qs, m oder qs): ").strip()
 
-    promts = {
+    prompts = {
         "Qs": "Schmelzwärme Qs (J): ",
         "m": "Masse m (kg): ",
         "qs": "spezifische Schmelzwärme qs (J/kg): "
     }
 
     def get(var):
-        return float(input(promts[var]))
+        return float(input(prompts[var]))
     
     if ges == "Qs":
         qs = get("qs")
@@ -178,7 +189,7 @@ def schmelz_rechner():
         print(f"qs = {qs:.2f} J/kg")
     
     else:
-        print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")
+        fehler()
 
 def verdampfungs_rechner():
     print("Formel: Qv = qv * m")
@@ -186,14 +197,14 @@ def verdampfungs_rechner():
     print("")
     ges = input("Was ist gesucht? (Qv, m oder qv): ").strip()
 
-    promts = {
+    prompts = {
         "Qv": "Verdampfungswärme Qv (J): ",
         "m": "Masse m (kg): ",
         "qv": "spezifische Verdampfungswärme qv (J/kg): "
     }
 
     def get(var):
-        return float(input(promts[var]))
+        return float(input(prompts[var]))
     
     if ges == "Qv":
         qv = get("qv")
@@ -217,7 +228,7 @@ def verdampfungs_rechner():
         print(f"qv = {qv:.2f} J/kg")
 
     else:
-        print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")
+        fehler()
 
 def dampferwaermung_rechner():
     print("Formel: Q = c * m * ΔT")
@@ -239,14 +250,14 @@ def dampferwaermung_rechner():
     print("")
     ges = input("Was ist gesucht? (Q, m, c oder ΔT -> t): ").strip().lower()
     
-    promts = {
+    prompts = {
         "q": "Wärmeenergie Q (J): ",
         "m": "Masse m (kg): ",
         "c": "spezifische Wärmekapazität c (J/(kg*K)): ",
         "t": "Temperaturänderung ΔT (K oder °C): "
     }
     def get(var):
-        return float(input(promts[var]))
+        return float(input(prompts[var]))
     
     if ges == "q":
         c = get("c")
@@ -281,7 +292,7 @@ def dampferwaermung_rechner():
         print(f"ΔT = {dT:.2f} K")
 
     else:
-        print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")
+        fehler()
 
 def geschwindigkeit_rechner():
     print("Formel: v = s / t")
@@ -306,7 +317,7 @@ def geschwindigkeit_rechner():
 
     elif ges == "s":
         if input("Wird v in km/h angegeben? (j/n): ").strip().lower() == "j":
-            v = get("v") / 3.6
+            v = kmh_to_ms(get("v"))
         else:
             v = get("v")
         t = get("t")
@@ -316,34 +327,33 @@ def geschwindigkeit_rechner():
 
     elif ges == "t":
         if input("Wird v in km/h angegeben? (j/n): ").strip().lower() == "j":
-            v = get("v") / 3.6
+            v = kmh_to_ms(get("v"))
         else:
             v = get("v")
-        
         s = get("s")
         t = s / v
         print(f"t = {s} m / {v} m/s")
         print(f"t = {t:.2f} s")
 
     else:
-        print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")
+        fehler()
 
 def beschleunigung_rechner():
     print("Formel: a = Δv / Δt")
     print("------------------------\n")
     ges = input("Was ist gesucht? (a, dv oder dt): ").strip().lower()
 
-    promts = {
+    prompts = {
         "a": "Beschleunigung a (m/s²): ",
         "dv": "Geschwindigkeitsänderung Δv (m/s oder km/h): ",
         "dt": "Zeitänderung Δt (s): "
     }
     def get(var):
-        return float(input(promts[var]))
+        return float(input(prompts[var]))
     
     if ges == "a":
         if input("Wird Δv in km/h angegeben? (j/n): ").strip().lower() == "j":
-            dv = get("dv") / 3.6
+            dv = kmh_to_ms(get("dv"))
         else:
             dv = get("dv")
         dt = get("dt")
@@ -361,7 +371,7 @@ def beschleunigung_rechner():
     elif ges == "dt":
         a = get("a")
         if input("Wird Δv in km/h angegeben? (j/n): ").strip().lower() == "j":
-            dv = get("dv") / 3.6
+            dv = kmh_to_ms(get("dv"))
         else:
             dv = get("dv")
         dt = dv / a
@@ -369,7 +379,7 @@ def beschleunigung_rechner():
         print(f"Δt = {dt:.2f} s")
 
     else:
-        print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")
+        fehler()
 
 def weg_gleichmäßig_bewegung_rechner():
     print("Formel: s = v * t")
@@ -377,44 +387,47 @@ def weg_gleichmäßig_bewegung_rechner():
     print("")
     ges = input("Was ist gesucht? (s, v oder t): ").strip().lower()
 
-    promts = {
+    prompts = {
         "s": "Weg s (m): ",
         "v": "Geschwindigkeit v (m/s oder km/h): ",
         "t": "Zeit t (s): "
     }
     
     def get(var):
-        return float(input(promts[var]))
+        return float(input(prompts[var]))
     
     if ges == "s":
         if input("Wird v in km/h angegeben? (j/n): ").strip().lower() == "j":
-            v = get("v") / 3.6
+            v = kmh_to_ms(get("v"))
         else:
             v = get("v")
         t = get("t")
         s = v * t
-        print(f"s = {v} m/s² * {t} s")
+        print(f"s = {v} m/s * {t} s")
         print(f"s = {s:.2f} m")
     
     elif ges == "v":
         s = get("s")
         t = get("t")
+        if t == 0:
+            print("Die Zeit t darf nicht 0 sein!")
+            return
         v = s / t
         print(f"v = {s} m / {t} s")
         print(f"v = {v:.2f} m/s")
     
     elif ges == "t":
         if input("Wird v in km/h angegeben? (j/n): ").strip().lower() == "j":
-            v = get("v") / 3.6
+            v = kmh_to_ms(get("v"))
         else:
             v = get("v")
         s = get("s")
         t = s / v
-        print(f"t = {s} m / {v} m/s²")
+        print(f"t = {s} m / {v} m/s")
         print(f"t = {t:.2f} s")
     
     else: 
-        print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")
+        fehler()
 
 def kraft_rechner():
     print("Formel: F = m * a")
@@ -425,14 +438,14 @@ def kraft_rechner():
     prompts = {
         "F": "Kraft F (N): ",
         "m": "Masse m (kg): ",
-        "a": "Beschleunigung a (m/s²): "
+        "a": "Beschleunigung a (m/s² oder km/h): "
     }
     def get(var):
         return float(input(prompts[var]))
     
     if ges == "f":
         if input("Wird a in km/h angegeben? (j/n): ").strip().lower() == "j":
-            a = get("a") / 3.6
+            a = kmh_to_ms(get("a"))
         else:
             a = get("a")
         m = get("m")
@@ -443,7 +456,7 @@ def kraft_rechner():
     elif ges == "m":
         frage = input("Wird a in km/h angegeben? (j/n): ").strip().lower()
         if frage == "j":
-            a = get("a") / 3.6
+            a = kmh_to_ms(get("a"))
         else:
             a = get("a")
         F = get("F")
@@ -459,7 +472,7 @@ def kraft_rechner():
         print(f"a = {a:.2f} m/s²")
 
     else:
-        print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")
+        fehler()
 
 def gewichts_kraft_rechner():
     print("Formel: Fg = m * g")
@@ -507,5 +520,5 @@ def gewichts_kraft_rechner():
         print(f"g = {g:.2f} m/s²")
 
     else:
-        print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")
+        fehler()
     

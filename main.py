@@ -9,12 +9,7 @@ while True:
     print(
     '''
     1. Mechanik
-    2. Druck
-    3. Wärme
-    4. Spezifische Schmelzwärme
-    5. Spezifische Verdampfungswärme
-    6. Dampferwärmung
-    7. ...
+    2. 
     '''
     )
 
@@ -44,9 +39,26 @@ while True:
                 weg_gleichmäßig_bewegung_rechner()
                 time.sleep(3)
             else:
-                print("Diese Formel ist nicht verfügbar!")
+               fehler()
+        
+        elif wahl == 2:
+            print('''
+            1. Kraft
+            2. Gewichtskraft
+            3. Federkraft
+            ''')
+            wahl2 = int(input("Formel Zahl: "))
+            if wahl2 == 1:
+                kraft_rechner()
+                time.sleep(3.5)
+            elif wahl2 == 2:
+                gewichts_kraft_rechner()
+                time.sleep(3.5)
+            elif wahl2 == 3:
 
-
+                time.sleep(3.5)
+            else:
+                fehler()
 
     elif auswahl == 2:
         druck_rechner()
@@ -65,7 +77,7 @@ while True:
         time.sleep(3)
 
     elif auswahl == 6:
-        dampferwaermung_rechner()
+        dicht_rechner()
         time.sleep(3)
 
     else:
