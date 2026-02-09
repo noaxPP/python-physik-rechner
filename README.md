@@ -79,7 +79,7 @@
 <h2>📌 Note</h2>
 
 <p>
-  This project is primarily a <strong>learning project</strong>.
+  This project is primarily a <strong>learning project</strong> and written in <strong>german</strong>.
   Accuracy and clarity are more important than complexity.
 </p>
 
