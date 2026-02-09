@@ -328,3 +328,49 @@ def geschwindigkeit_rechner():
 
     else:
         print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")
+
+def beschleunigung_rechner():
+    print("Formel: a = Δv / Δt")
+    print("Gesucht: a, dv oder dt\n")
+    print("")
+    ges = input("Was ist gesucht? (a, dv oder dt): ").strip().lower()
+
+    promts = {
+        "a": "Beschleunigung a (m/s²): ",
+        "dv": "Geschwindigkeitsänderung Δv (m/s oder km/h): ",
+        "dt": "Zeitänderung Δt (s): "
+    }
+    def get(var):
+        return float(input(promts[var]))
+    
+    if ges == "a":
+        if input("Wird Δv in km/h angegeben? (j/n): ").strip().lower() == "j":
+            dv = get("dv") / 3.6
+        else:
+            dv = get("dv")
+        dt = get("dt")
+        a = dv / dt
+        print(f"a = {dv} / {dt}")
+        print(f"a = {a:.2f} m/s²")
+    
+    elif ges == "dv":
+        a = get("a")
+        dt = get("dt")
+        kmh_dv = a * dt *3.6
+        dv = a * dt
+        print(f"Δv = {a} * {dt}")
+        print(f"Δv = {dv:.2f} m/s")
+        print(f"oder Δv = {kmh_dv:.2f} km/h")
+
+    elif ges == "dt":
+        a = get("a")
+        if input("Wird Δv in km/h angegeben? (j/n): ").strip().lower() == "j":
+            dv = get("dv") / 3.6
+        else:
+            dv = get("dv")
+        dt = dv / a
+        print(f"Δt = {dv} / {a}")
+        print(f"Δt = {dt:.2f} s")
+
+    else:
+        print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")
