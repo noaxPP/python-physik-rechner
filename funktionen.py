@@ -421,3 +421,48 @@ def weg_gleichmäßig_bewegung_rechner():
     
     else: 
         print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")
+
+def kraft_rechner():
+    print("Formel: F = m * a")
+    print("Gesucht: F, m oder a")
+    print("")
+    ges = input("Was ist gesucht? (F, m oder a): ").strip().lower()
+
+    prompts = {
+        "F": "Kraft F (N): ",
+        "m": "Masse m (kg): ",
+        "a": "Beschleunigung a (m/s²): "
+    }
+    def get(var):
+        return float(input(prompts[var]))
+    
+    if ges == "f":
+        if input("Wird a in km/h angegeben? (j/n): ").strip().lower() == "j":
+            a = get("a") / 3.6
+        else:
+            a = get("a")
+        m = get("m")
+        F = m * a
+        print(f"F = {m} * {a}")
+        print(f"F = {F:.0} N")
+
+    elif ges == "m":
+        if input("Wird a in km/h angegeben? (j/n): ").strip().lower() == "j":
+            a = get("a") / 3.6
+        else:
+            a = get("a")
+        F = get("F")
+        m = F / a
+        print(f"m = {F} / {a}")
+        print(f"m = {m:.4f} kg")
+    
+    elif ges == "a":
+        m = get("m")
+        F = get("F")
+        a = F / m
+        print(f"a = {F} / {m}")
+        print(f"a = {a:.2f} m/s²")
+
+    else:
+        print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")
+
