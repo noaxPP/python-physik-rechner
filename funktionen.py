@@ -374,3 +374,50 @@ def beschleunigung_rechner():
 
     else:
         print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")
+
+def weg_gleichmäßig_bewegung_rechner():
+    print("Formel: s = v * t")
+    print("Gesucht: s, v oder t\n")
+    print("")
+    ges = input("Was ist gesucht? (s, v oder t): ").strip().lower()
+
+    promts = {
+        "s": "Weg s (m): ",
+        "v": "Geschwindigkeit v (m/s oder km/h): ",
+        "t": "Zeit t (s): "
+    }
+    
+    def get(var):
+        return float(input(promts[var]))
+    
+    if ges == "s":
+        if input("Wird v in km/h angegeben? (j/n): ").strip().lower() == "j":
+            v = get("v") / 3.6
+        else:
+            v = get("v")
+        t = get("t")
+        s = v * t
+        print(f"s = {v} * {t}")
+        print(f"s = {s:.2f} m")
+    
+    elif ges == "v":
+        s = get("s")
+        t = get("t")
+        kmh_v = s / t * 3.6
+        v = s / t
+        print(f"v = {s} / {t}")
+        print(f"v = {v:.2f} m/s")
+        print(f"oder v = {kmh_v:.2f} km/h")
+    
+    elif ges == "t":
+        if input("Wird v in km/h angegeben? (j/n): ").strip().lower() == "j":
+            v = get("v") / 3.6
+        else:
+            v = get("v")
+        s = get("s")
+        t = s / v
+        print(f"t = {s} / {v}")
+        print(f"t = {t:.2f} s")
+    
+    else: 
+        print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")

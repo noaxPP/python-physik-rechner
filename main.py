@@ -8,7 +8,7 @@ while True:
     print("Welches Thema wählst du?")
     print(
     '''
-    1. Dichte
+    1. Mechanik
     2. Druck
     3. Wärme
     4. Spezifische Schmelzwärme
@@ -21,8 +21,32 @@ while True:
     auswahl = int(input("Menu Zahl: "))
 
     if auswahl == 1:
-        dicht_rechner()
-        time.sleep(3)
+        print('''
+        1. Bewegung
+        2. Kräfte      
+        '''
+        )
+        wahl = int(input("Menu Zahl: "))
+        if wahl == 1:
+            print('''
+            1. Geschwindigkeit
+            2. Beschleunigung
+            3. Weg bei gleichmäßiger Bewegung
+            ''')
+            wahl2 = int(input("Formel Zahl: "))
+            if wahl2 == 1:
+                geschwindigkeit_rechner()
+                time.sleep(3)
+            elif wahl2 == 2:
+                beschleunigung_rechner()
+                time.sleep(3)
+            elif wahl2 == 3:
+                weg_gleichmäßig_bewegung_rechner()
+                time.sleep(3)
+            else:
+                print("Diese Formel ist nicht verfügbar!")
+
+
 
     elif auswahl == 2:
         druck_rechner()
