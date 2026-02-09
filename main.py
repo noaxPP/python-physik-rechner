@@ -5,7 +5,7 @@ while True:
     print("") 
     print("Physik Rechner")
     print("-------------------------------")
-    print("Welche Formel möchtest du rechnen?")
+    print("Welches Thema wählst du?")
     print(
     '''
     1. Dichte

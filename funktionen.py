@@ -289,3 +289,42 @@ def dampferwaermung_rechner():
 
     else:
         print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")
+
+def geschwindigkeit_rechner():
+    print("Formel: v = s / t")
+    print("Gesucht: v, s oder t\n")
+    print("")
+    ges = input("Was ist gesucht? (v, s oder t): ").strip().lower()
+
+    prompts = {
+        "v": "Geschwindigkeit v (m/s): ",
+        "s": "Strecke s (m): ",
+        "t": "Zeit t (s):"
+    }
+
+    def get(var):
+        return float(input(prompts[var]))
+    
+    if ges == "v":
+        s = get("s")
+        t = get("t")
+        v = s / t
+        print(f"v = {s} / {t}")
+        print(f"v = {v:.2f} m/s")
+
+    elif ges == "s":
+        v = get("v")
+        t = get("t")
+        s = v * t
+        print(f"s = {v} * {t}")
+        print(f"s = {s:.2f} m")
+
+    elif ges == "t":
+        s = get("s")
+        v = get("v")
+        t = s / v
+        print(f"t = {s} / {v}")
+        print(f"t = {t:.2f} s")
+
+    else:
+        print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")
