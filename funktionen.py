@@ -11,6 +11,9 @@ def division_durch_null(name, wert):
 def fehler():
     print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")
 
+def cm_to_m(cm):
+    return cm * 100
+
 def dicht_rechner():
     print("Die Formel lautet:  p = m / V ")
     print("------------------------")
@@ -194,7 +197,6 @@ def schmelz_rechner():
 def verdampfungs_rechner():
     print("Formel: Qv = qv * m")
     print("------------------------\n")
-    print("")
     ges = input("Was ist gesucht? (Qv, m oder qv): ").strip()
 
     prompts = {
@@ -309,7 +311,10 @@ def geschwindigkeit_rechner():
         return float(input(prompts[var]))
     
     if ges == "v":
-        s = get("s")
+        if input("Wird s in cm angegeben? (j/n): ").strip().lower() == "j":
+            s = cm_to_m(get("s"))
+        else:
+            s = get("s")
         t = get("t")
         v = s / t
         print(f"v = {s} m / {t} s")
@@ -330,7 +335,10 @@ def geschwindigkeit_rechner():
             v = kmh_to_ms(get("v"))
         else:
             v = get("v")
-        s = get("s")
+        if input("Wird s in cm angegeben? (j/n): ").strip().lower() == "j":
+            s = cm_to_m(get("s"))
+        else:
+            s = get("s")
         t = s / v
         print(f"t = {s} m / {v} m/s")
         print(f"t = {t:.2f} s")
@@ -407,7 +415,10 @@ def weg_gleichmäßig_bewegung_rechner():
         print(f"s = {s:.2f} m")
     
     elif ges == "v":
-        s = get("s")
+        if input("Wird s in cm angegeben? (j/n): ").strip().lower() == "j":
+            s = cm_to_m(get("s"))
+        else:
+            s = get("s")
         t = get("t")
         if t == 0:
             print("Die Zeit t darf nicht 0 sein!")
@@ -421,7 +432,10 @@ def weg_gleichmäßig_bewegung_rechner():
             v = kmh_to_ms(get("v"))
         else:
             v = get("v")
-        s = get("s")
+        if input("Wird s in cm angegeben? (j/n): ").strip().lower() == "j":
+            s = cm_to_m(get("s"))
+        else:
+            s = get("s")
         t = s / v
         print(f"t = {s} m / {v} m/s")
         print(f"t = {t:.2f} s")
@@ -522,3 +536,48 @@ def gewichts_kraft_rechner():
     else:
         fehler()
     
+def federkraft_rechner():
+    print("Formel: F = D * s")
+    print("------------------------\n")
+    ges = input("Was ist gesucht? (F, D oder s): ").strip().lower()
+
+    prompts = {
+        "F": "Federkraft F (N): ",
+        "D": "Federkonstante D (N/m): ",
+        "s": "Federweg s (m): "
+    }
+    def get(var):
+        return float(input(prompts[var]))
+    
+    if ges == "f":
+        D = get("D")
+        if input("Wird s in cm angegeben? (j/n): ").strip().lower() == "j":
+            s = cm_to_m(get("s"))
+        else:
+            s = get("s")
+        F = D * s
+        print(f"F = {D} N/m * {s} m")
+        print(f"F = {F:.2f} N")
+
+    elif ges == "d":
+        F = get("F")
+        if input("Wird s in cm angegeben? (j/n): ").strip().lower() == "j":
+            s = cm_to_m(get("s"))
+        else:
+            s = get("s")
+        D = F / s
+        print(f"D = {F} N / {s} m")
+        print(f"D = {D:.2f} N/m")
+    
+    elif ges == "s":
+        D = get("D")
+        F = get("F")
+        s = F / D
+        print(f"s = {F} N / {D} N/m")
+        print(f"s = {s:.2f} m")
+
+    else:
+        fehler()
+
+    
+
