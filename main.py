@@ -45,7 +45,7 @@ while True:
             print('''
             1. Kraft
             2. Gewichtskraft
-            3. Federkraft
+            3. Hookesches Gesetz (Federkraft)
             ''')
             wahl2 = int(input("Formel Zahl: "))
             if wahl2 == 1:
@@ -55,7 +55,7 @@ while True:
                 gewichts_kraft_rechner()
                 time.sleep(3.5)
             elif wahl2 == 3:
-
+                federkraft_rechner()
                 time.sleep(3.5)
             else:
                 fehler()

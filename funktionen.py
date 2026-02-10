@@ -3,11 +3,6 @@ import time
 def kmh_to_ms(v):
     return v / 3.6
 
-def division_durch_null(name, wert):
-    if wert == 0:
-        print(f"{name} darf nicht 0 sein!")
-    return True
-
 def fehler():
     print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")
 
@@ -37,16 +32,23 @@ def dicht_rechner():
     elif ges == "p":
         m = get("m")
         V = get("V")
-        rho = m / V
-        print(f"p = {m} kg / {V} m³")
-        print(f"p = {rho:3f} kg/m³")
+        try:
+            rho = m / V
+            print(f"p = {m} kg / {V} m³")
+            print(f"p = {rho:3f} kg/m³")
+        except ZeroDivisionError:
+            print("Das Volumen V darf nicht 0 sein!")
+    
 
     elif ges == "v":
         rho = get("p")
         m = get("m")
-        V = m / rho
-        print(f"V = {m} kg / {rho} kg/m³")
-        print(f"V = {V:3f} m³")
+        try:
+            V = m / rho
+            print(f"V = {m} kg / {rho} kg/m³")
+            print(f"V = {V:3f} m³")
+        except ZeroDivisionError:
+            print("Die Dichte p darf nicht 0 sein!")
 
     else:
         fehler()
@@ -68,9 +70,12 @@ def druck_rechner():
     if ges == "p":
         F = get("F")
         A = get("A")
-        p = F / A
-        print(f"p = {F} N / {A} m²")
-        print(f"p = {p:.3f} Pa")
+        try:
+            p = F / A
+            print(f"p = {F} N / {A} m²")
+            print(f"p = {p:.3f} Pa")
+        except ZeroDivisionError:
+            print("Die Fläche A darf nicht 0 sein!")
 
     elif ges == "f":
         p = get("p")
@@ -82,10 +87,12 @@ def druck_rechner():
     elif ges == "a":
         F = get("F")
         p = get("p")
-        A = F / p
-        print(f"A = {F} N / {p} Pa")
-        print(f"A = {A:.3f} m²")
-
+        try:
+            A = F / p
+            print(f"A = {F} N / {p} Pa")
+            print(f"A = {A:.3f} m²")
+        except ZeroDivisionError:
+            print("Der Druck p darf nicht 0 sein!")
     else:
        fehler()
 
@@ -133,25 +140,34 @@ def waerme_rechner():
         Q = get("q")
         c = get("c")
         dT = get("t")
-        m = Q / (c * dT)
-        print(f"m = {Q} J / ({c} J/(kg*K) * {dT} K)")
-        print(f"m = {m:.4f} kg")
+        try:
+            m = Q / (c * dT)
+            print(f"m = {Q} J / ({c} J/(kg*K) * {dT} K)")
+            print(f"m = {m:.4f} kg")
+        except ZeroDivisionError:
+            print("c * ΔT darf nicht 0 ergeben!")
 
     elif gesucht == "c":
         Q = get("q")
         m = get("m")
         dT = get("t")
-        c = Q / (m * dT)
-        print(f"c = {Q} J / ({m} kg * {dT} K)")
-        print(f"c = {c:.2f} J/(kg*K)")
+        try:
+            c = Q / (m * dT)
+            print(f"c = {Q} J / ({m} kg * {dT} K)")
+            print(f"c = {c:.2f} J/(kg*K)")
+        except ZeroDivisionError:
+            print("m * ΔT darf nicht 0 ergeben!")
 
     elif gesucht in ("t", "Δt", "dt"):
         Q = get("q")
         m = get("m")
         c = get("c")
-        dT = Q / (m * c)
-        print(f"ΔT = {Q} J / ({m} kg * {c} J/(kg*K))")
-        print(f"ΔT = {dT:.2f} K")
+        try:
+            dT = Q / (m * c)
+            print(f"ΔT = {Q} J / ({m} kg * {c} J/(kg*K))")
+            print(f"ΔT = {dT:.2f} K")
+        except ZeroDivisionError:
+            print("m * c darf nicht 0 ergeben!")
 
     else:
         fehler()
@@ -179,18 +195,23 @@ def schmelz_rechner():
 
     elif ges == "m":
         Qs = get("Qs")
-        qs = get("qs")
-        m = Qs / qs
-        print(f"m = {Qs} J / {qs} J/kg")
-        print(f"m = {m:.4f} kg")
+        qs = get("qs") 
+        try:
+            m = Qs / qs
+            print(f"m = {Qs} J / {qs} J/kg")
+            print(f"m = {m:.4f} kg")
+        except ZeroDivisionError:
+            print("Die spezifische Schmelzwärme darf nicht 0 sein!")
 
     elif ges == "qs":
         Qs = get("Qs")
         m = get("m")
-        qs = Qs / m
-        print(f"qs = {Qs} J / {m} kg")
-        print(f"qs = {qs:.2f} J/kg")
-    
+        try:
+            qs = Qs / m
+            print(f"qs = {Qs} J / {m} kg")
+            print(f"qs = {qs:.2f} J/kg")
+        except ZeroDivisionError:
+            print("Die Masse m darf nicht 0 sein!")
     else:
         fehler()
 
@@ -218,16 +239,22 @@ def verdampfungs_rechner():
     elif ges == "m":
         Qv = get("Qv")
         qv = get("qv")
-        m = Qv / qv
-        print(f"m = {Qv} J / {qv} J/kg")
-        print(f"m = {m:.4f} kg")
+        try:
+            m = Qv / qv
+            print(f"m = {Qv} J / {qv} J/kg")
+            print(f"m = {m:.4f} kg")
+        except ZeroDivisionError:
+            print("Die spezifische Verdampfungswärme darf nicht 0 sein!")
 
     elif ges == "qv":
         Qv = get("Qv")
         m = get("m")
-        qv = Qv / m
-        print(f"qv = {Qv} J / {m} kg")
-        print(f"qv = {qv:.2f} J/kg")
+        try:
+            qv = Qv / m
+            print(f"qv = {Qv} J / {m} kg")
+            print(f"qv = {qv:.2f} J/kg")
+        except ZeroDivisionError:
+            print("Die Masse m darf nicht 0 sein!")
 
     else:
         fehler()
@@ -273,25 +300,34 @@ def dampferwaermung_rechner():
         Q = get("q")
         c = get("c")
         dT = get("t")
-        m = Q / (c * dT)
-        print(f"m = {Q} J / ({c} J/(kg*K) * {dT} K)")
-        print(f"m = {m:.4f} kg")
+        try:
+            m = Q / (c * dT)
+            print(f"m = {Q} J / ({c} J/(kg*K) * {dT} K)")
+            print(f"m = {m:.4f} kg")
+        except ZeroDivisionError:
+            print("c * ΔT darf nicht 0 sein!")
 
     elif ges == "c":
         Q = get("q")
         m = get("m")
         dT = get("t")
-        c = Q / (m * dT)
-        print(f"c = {Q} J / ({m} kg * {dT} K)")
-        print(f"c = {c:.2f} J/(kg*K)")
+        try:
+            c = Q / (m * dT)
+            print(f"c = {Q} J / ({m} kg * {dT} K)")
+            print(f"c = {c:.2f} J/(kg*K)")
+        except ZeroDivisionError:
+            print("m * ΔT darf nicht 0 sein!")
 
     elif ges in ("t", "Δt", "dt"):
         Q = get("q")
         m = get("m")
         c = get("c")
-        dT = Q / (m * c)
-        print(f"ΔT = {Q} J / ({m} kg * {c} J/(kg*K))")
-        print(f"ΔT = {dT:.2f} K")
+        try:
+            dT = Q / (m * c)
+            print(f"ΔT = {Q} J / ({m} kg * {c} J/(kg*K))")
+            print(f"ΔT = {dT:.2f} K")
+        except ZeroDivisionError:
+            print("m * c darf nicht 0 sein!")
 
     else:
         fehler()
@@ -316,9 +352,12 @@ def geschwindigkeit_rechner():
         else:
             s = get("s")
         t = get("t")
-        v = s / t
-        print(f"v = {s} m / {t} s")
-        print(f"v = {v:.2f} m/s")
+        try:
+            v = s / t
+            print(f"v = {s} m / {t} s")
+            print(f"v = {v:.2f} m/s")
+        except ZeroDivisionError:
+            print("Die Zeit t darf nicht 0 sein!")
 
     elif ges == "s":
         if input("Wird v in km/h angegeben? (j/n): ").strip().lower() == "j":
@@ -339,9 +378,12 @@ def geschwindigkeit_rechner():
             s = cm_to_m(get("s"))
         else:
             s = get("s")
-        t = s / v
-        print(f"t = {s} m / {v} m/s")
-        print(f"t = {t:.2f} s")
+        try:
+            t = s / v
+            print(f"t = {s} m / {v} m/s")
+            print(f"t = {t:.2f} s")
+        except ZeroDivisionError:
+            print("Die Geschwindigkeit v darf nicht 0 sein!")
 
     else:
         fehler()
@@ -365,9 +407,12 @@ def beschleunigung_rechner():
         else:
             dv = get("dv")
         dt = get("dt")
-        a = dv / dt
-        print(f"a = {dv} m/s / {dt} s")
-        print(f"a = {a:.2f} m/s²")
+        try:
+            a = dv / dt
+            print(f"a = {dv} m/s / {dt} s")
+            print(f"a = {a:.2f} m/s²")
+        except ZeroDivisionError:
+            print("Die Zeitänderung darf nicht 0 sein!")
     
     elif ges == "dv":
         a = get("a")
@@ -382,9 +427,12 @@ def beschleunigung_rechner():
             dv = kmh_to_ms(get("dv"))
         else:
             dv = get("dv")
-        dt = dv / a
-        print(f"Δt = {dv} m/s / {a} m/s²")
-        print(f"Δt = {dt:.2f} s")
+        try:
+            dt = dv / a
+            print(f"Δt = {dv} m/s / {a} m/s²")
+            print(f"Δt = {dt:.2f} s")
+        except ZeroDivisionError:
+            print("Die Beschleunigung a darf nicht 0 sein!")
 
     else:
         fehler()
@@ -423,9 +471,12 @@ def weg_gleichmäßig_bewegung_rechner():
         if t == 0:
             print("Die Zeit t darf nicht 0 sein!")
             return
-        v = s / t
-        print(f"v = {s} m / {t} s")
-        print(f"v = {v:.2f} m/s")
+        try:
+            v = s / t
+            print(f"v = {s} m / {t} s")
+            print(f"v = {v:.2f} m/s")
+        except ZeroDivisionError:
+            print("Der Weg s darf nicht 0 sein!")
     
     elif ges == "t":
         if input("Wird v in km/h angegeben? (j/n): ").strip().lower() == "j":
@@ -436,9 +487,12 @@ def weg_gleichmäßig_bewegung_rechner():
             s = cm_to_m(get("s"))
         else:
             s = get("s")
-        t = s / v
-        print(f"t = {s} m / {v} m/s")
-        print(f"t = {t:.2f} s")
+        try:
+            t = s / v
+            print(f"t = {s} m / {v} m/s")
+            print(f"t = {t:.2f} s")
+        except ZeroDivisionError:
+            print("Die Geschwindigkeit v ddarf nicht 0 sein")
     
     else: 
         fehler()
@@ -474,16 +528,22 @@ def kraft_rechner():
         else:
             a = get("a")
         F = get("F")
-        m = F / a
-        print(f"m = {F} N/ {a} m/s²")
-        print(f"m = {m:.4f} kg")
+        try:
+            m = F / a
+            print(f"m = {F} N/ {a} m/s²")
+            print(f"m = {m:.4f} kg")
+        except ZeroDivisionError:
+            print("Die Beschleunigung a darf nicht 0 sein!")
     
     elif ges == "a":
         m = get("m")
         F = get("F")
-        a = F / m
-        print(f"a = {F} N / {m} kg")
-        print(f"a = {a:.2f} m/s²")
+        try:
+            a = F / m
+            print(f"a = {F} N / {m} kg")
+            print(f"a = {a:.2f} m/s²")
+        except ZeroDivisionError:
+            print("Die Masse m darf nicht 0 sein!")
 
     else:
         fehler()
@@ -522,16 +582,22 @@ def gewichts_kraft_rechner():
     elif ges == "m":
         Fg = get("Fg")
         g = get("g")
-        m = Fg / g
-        print(f"m = {Fg} N / {g} m/s²")
-        print(f"m = {m:.4f} kg")
+        try:
+            m = Fg / g
+            print(f"m = {Fg} N / {g} m/s²")
+            print(f"m = {m:.4f} kg")
+        except ZeroDivisionError:
+            print("Der Ortsfaktor g darf nicht 0 sein!")
 
     elif ges == "g":
         Fg = get("Fg")
         m = get("m")
-        g = Fg / m
-        print(f"g = {Fg} N / {m} kg")
-        print(f"g = {g:.2f} m/s²")
+        try:
+            g = Fg / m
+            print(f"g = {Fg} N / {m} kg")
+            print(f"g = {g:.2f} m/s²")
+        except ZeroDivisionError:
+            print("Die Masse m darf nicht 0 sein!")
 
     else:
         fehler()
@@ -565,17 +631,22 @@ def federkraft_rechner():
             s = cm_to_m(get("s"))
         else:
             s = get("s")
-        D = F / s
-        print(f"D = {F} N / {s} m")
-        print(f"D = {D:.2f} N/m")
+        try:
+            D = F / s
+            print(f"D = {F} N / {s} m")
+            print(f"D = {D:.2f} N/m")
+        except ZeroDivisionError:
+           print("Der Federweg s darf nicht 0 sein!") 
     
     elif ges == "s":
         D = get("D")
         F = get("F")
-        s = F / D
-        print(f"s = {F} N / {D} N/m")
-        print(f"s = {s:.2f} m")
-
+        try:
+            s = F / D
+            print(f"s = {F} N / {D} N/m")
+            print(f"s = {s:.2f} m")
+        except ZeroDivisionError:
+            print("Die Federkonstante D darf nicht 0 sein!")
     else:
         fehler()
 
