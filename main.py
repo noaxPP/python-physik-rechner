@@ -9,7 +9,7 @@ while True:
     print(
     '''
     1. Mechanik
-    2. 
+    2. Arbeit, Energie und Leistung
     '''
     )
 
@@ -61,25 +61,41 @@ while True:
                 fehler()
 
     elif auswahl == 2:
-        druck_rechner()
-        time.sleep(3)
+        print('''
+        1. Arbeit
+        2. Energie
+        3. Leistung
+        ''')
+        wahl = int(input("Menu Zahl: "))    
+        if wahl == 1:
+            arbeit_rechner()
+            time.sleep(3)
+        elif wahl == 2:
+            #energie_rechner()
+            time.sleep(3)
+        elif wahl == 3:
+            #leistung_rechner()
+            time.sleep(3)
+        else:
+            fehler()
+        
+# they are just from the old menu 
+   #elif auswahl == 3:
+   #    waerme_rechner()
+   #    time.sleep(3)
+   #
+   #elif auswahl == 4:
+   #    schmelz_rechner()
+   #    time.sleep(3)
 
-    elif auswahl == 3:
-        waerme_rechner()
-        time.sleep(3)
-    
-    elif auswahl == 4:
-        schmelz_rechner()
-        time.sleep(3)
+   #elif auswahl == 5:
+   #    verdampfungs_rechner()
+   #    time.sleep(3)
 
-    elif auswahl == 5:
-        verdampfungs_rechner()
-        time.sleep(3)
+   #elif auswahl == 6:
+   #    dicht_rechner()
+   #    time.sleep(3)
 
-    elif auswahl == 6:
-        dicht_rechner()
-        time.sleep(3)
-
-    else:
-        print("Menu noch nicht verfügbar! :(")
-        time.sleep(3)
+   #else:
+   #    print("Menu noch nicht verfügbar! :(")
+   #    time.sleep(3)

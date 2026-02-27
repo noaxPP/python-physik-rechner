@@ -650,5 +650,64 @@ def federkraft_rechner():
     else:
         fehler()
 
+def arbeit_rechner():
+    print("Formel: W = F * s")
+    print("------------------------\n")
+
+    ges = input("Was ist gesucht? (W, F oder s): ").strip().lower()
+
+    prompts = {
+        "W": "Arbeit W (J): ",
+        "F": "Kraft F (N): ",
+        "s": "Weg s (m): "
+    }
+
+    def get(var):
+        return float(input(prompts[var]))
+
+    if ges == "w":
+        F = get("F")
+
+        if input("Wird s in cm angegeben? (j/n): ").strip().lower() == "j":
+            s = cm_to_m(get("s"))
+        else:
+            s = get("s")
+
+        W = F * s
+        print(f"W = {F} N * {s} m")
+        print(f"W = {W:.2f} J")
+
+    elif ges == "f":
+        W = get("W")
+
+        if input("Wird s in cm angegeben? (j/n): ").strip().lower() == "j":
+            s = cm_to_m(get("s"))
+        else:
+            s = get("s")
+
+        try:
+            F = W / s
+            print(f"F = {W} J / {s} m")
+            print(f"F = {F:.2f} N")
+        except ZeroDivisionError:
+            print("Der Weg s darf nicht 0 sein!")
+
+    elif ges == "s":
+        F = get("F")
+        W = get("W")
+
+        try:
+            s = W / F
+            print(f"s = {W} J / {F} N")
+            print(f"s = {s:.2f} m")
+        except ZeroDivisionError:
+            print("Die Kraft F darf nicht 0 sein!")
+
+    else:
+        fehler()
+
+
+    
+
     
 
