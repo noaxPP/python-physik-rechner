@@ -10,6 +10,7 @@ while True:
     '''
     1. Mechanik
     2. Arbeit, Energie und Leistung
+    3. Dichte und Druck
     '''
     )
 
@@ -71,14 +72,51 @@ while True:
             arbeit_rechner()
             time.sleep(3)
         elif wahl == 2:
-            #energie_rechner()
+            print('''
+            1. Kinetische Energie
+            2. Potentielle Energie
+            ''')
+            wahl2 = int(input("Formel Zahl: "))
+            if wahl2 == 1:
+                kinetische_energie_rechner()
+                time.sleep(3)
+            elif wahl2 == 2:
+                potentielle_energie_rechner()
+                time.sleep(3)
+            else:
+                fehler()
             time.sleep(3)
         elif wahl == 3:
-            #leistung_rechner()
+            leistung_rechner()
             time.sleep(3)
         else:
             fehler()
-        
+
+    elif auswahl == 3:
+        print('''
+        1. Dichte
+        2. Druck
+        ''')  
+        wahl = int(input("Menu Zahl: "))
+        if wahl == 1:
+            dicht_rechner()
+            time.sleep(3)
+        elif wahl == 2:
+            print('''
+            1. Druck
+            2. Hydrostatischer Druck
+            ''')
+            wahl2 = int(input("Formel Zahl: "))
+            if wahl2 == 1:
+                druck_rechner()
+                time.sleep(3)
+            elif wahl2 == 2:
+                #hydrostatischer_druck_rechner()
+                time.sleep(3)
+            else:
+                fehler()
+    else:
+        fehler()       
 # they are just from the old menu 
    #elif auswahl == 3:
    #    waerme_rechner()

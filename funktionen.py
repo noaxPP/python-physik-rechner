@@ -9,6 +9,15 @@ def fehler():
 def cm_to_m(cm):
     return cm * 100
 
+def get(var, prompts):
+    return float(input(prompts[var]))
+
+def geschwindigkeit_check(var, prompts):
+    if input("Wird {var} in km/h angegeben (j/n): ".format(var=var)).strip().lower() == "j":
+        return kmh_to_ms(get(var, prompts))
+    else:
+        {var} = get("{var}")
+
 def dicht_rechner():
     print("Die Formel lautet:  p = m / V ")
     print("------------------------")
@@ -706,8 +715,160 @@ def arbeit_rechner():
     else:
         fehler()
 
+def kinetische_energie_rechner():
+    print("Formel: Ek = 1/2 * m * v²")
+    print("------------------------\n")
+    ges = input("Was ist gesucht? (Ek, m oder v): ").strip(). lower()
 
+    prompts = {
+        "Ek": "Kinetische Energie Ek (J): ",
+        "m": "Masse m (kg): ",
+        "v": "Geschwindigkeit v (m/s oder km/h): "
+    }
+
+    def get(var):
+        return float(input(prompts[var]))
     
+    if ges == "ek":
+        m = get("m")
+        if input("Wird v in km/h angegeben? (j/n): ").strip().lower() == "j":
+            v = kmh_to_ms(get("v"))
+        else:
+            v = get("v")
+        Ek = 0.5 * m * v **2
+        print(f"Ek = 0.5 * {m} kg * ({v} m/s)²")
+        print("Ek = {Ek:.1f} J")
+
+    elif ges == "m":
+        Ek = get("Ek")
+        v = geschwindigkeit_check("v", prompts)
+        try:
+            m = (2 * Ek) / v**2
+            print(f"m = (2 * {Ek} J) / ({v} m/s)²")
+            print(f"m = {m:.4f} kg")
+        except ZeroDivisionError:
+            print("Die Geschwindigkeit v darf nicht 0 sein!")
+
+    elif ges == "v":
+        Ek = get("Ek")
+        m = get("m")
+        try:
+            v = (2 * Ek / m) ** 0.5
+            print(f"v = √((2 * {Ek} J) / {m} kg)")
+            print(f"v = {v:.2f} m/s")
+        except ZeroDivisionError:
+            print("Die Masse m darf nicht 0 sein!")
+    
+    else:
+        fehler()
+
+def potentielle_energie_rechner():
+    print("Formel: Ep = m * g * h")
+    print("------------------------\n")
+    ges = input("Was ist gesucht? (Ep, m, g oder h): ").strip().lower()
+    
+    g_werte = {
+        "Erde": 9.81,
+        "Mond": 1.62,
+        "Mars": 3.71,
+        "Jupiter": 24.79
+        }
+    
+    print("Typische Werte für Ortsfaktor g [m/s²]:")
+    for planet, wert in g_werte.items():
+        print(f"{planet:<10} = {wert} m/s²")
+    print("")
+    prompts = {
+        "Ep": "Potentielle Energie Ep (J): ",
+        "m": "Masse m (kg): ",
+        "g": "Ortsfaktor g (m/s²): ",
+        "h": "Höhe h (m): "
+    }
+    if ges == "ep":
+        m = get("m", prompts)
+        g = get("g", prompts)
+        h = get("h", prompts)
+        Ep = m * g * h
+        print(f"Ep = {m} kg * {g} m/s² * {h} m")
+        print(f"Ep = {Ep:.2f} J")
+    
+    elif ges == "m":
+        Ep = get("Ep", prompts)
+        g = get("g", prompts)
+        h = get("h", prompts)
+        try:
+            m = Ep / (g * h)
+            print(f"m = {Ep} J / ({g} m/s² * {h} m)")
+            print(f"m = {m:.4f} kg")
+        except ZeroDivisionError:
+            print("g * h darf nicht 0 ergeben!")
+    
+    elif ges == "g":
+        Ep = get("Ep", prompts)
+        m = get("m", prompts)
+        h = get("h", prompts)
+        try:
+            g = Ep / (m * h)
+            print(f"g = {Ep} J / ({m} kg * {h} m)")
+            print(f"g = {g:.2f} m/s²")
+        except ZeroDivisionError:
+            print("m * h darf nicht 0 ergeben!")
+
+    elif ges == "h":
+        Ep = get("Ep", prompts)
+        m = get("m", prompts)
+        g = get("g", prompts)
+        try:
+            h = Ep / (m * g)
+            print(f"h = {Ep} J / ({m} kg * {g} m/s²)")
+            print(f"h = {h:.2f} m")
+        except ZeroDivisionError:
+            print("m * g darf nicht 0 ergeben!")
+
+    else:
+        fehler()
+
+def leistung_rechner():
+    print("Formel: P = W / t")
+    print("------------------------\n")
+    ges = input("Was ist gesucht? (P, W oder t): ").strip().lower()
+
+    prompts = {
+        "P": "Leistung P (W): ",
+        "W": "Arbeit W (J): ",
+        "t": "Zeit t (s): "
+    }
+
+    if ges == "p":
+        W = get("W", prompts)
+        t = get("t", prompts)
+        try:
+            P = W / t
+            print(f"P = {W} J / {t} s")
+            print(f"P = {P:.2f} W")
+        except ZeroDivisionError:
+            print("Die Zeit t darf nicht 0 sein!")
+
+    elif ges == "w":
+        P = get("P", prompts)
+        t = get("t", prompts)
+        W = P * t
+        print(f"W = {P} W * {t} s")
+        print(f"W = {W:.2f} J")
+
+    elif ges == "t":
+        P = get("P", prompts)
+        W = get("W", prompts)
+        try:
+            t = W / P
+            print(f"t = {W} J / {P} W")
+            print(f"t = {t:.2f} s")
+        except ZeroDivisionError:
+            print("Die Leistung P darf nicht 0 sein!")
+
+    else:
+        fehler()
+        
 
     
 
