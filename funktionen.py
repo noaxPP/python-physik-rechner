@@ -1,874 +1,840 @@
 import time
 
-def kmh_to_ms(v):
-    return v / 3.6
 
-def fehler():
-    print("Ein Fehler ist aufgetreten, bitte versuche es erneut!")
+def kmh_to_ms(value):
+    return value / 3.6
 
-def cm_to_m(cm):
-    return cm * 100
 
-def get(var, prompts):
-    return float(input(prompts[var]))
+def cm_to_m(value):
+    return value / 100.0
 
-def geschwindigkeit_check(var, prompts):
-    if input("Wird {var} in km/h angegeben (j/n): ".format(var=var)).strip().lower() == "j":
-        return kmh_to_ms(get(var, prompts))
+
+def error_message():
+    print("An error occurred. Please try again!")
+
+
+def read_float(prompt):
+    while True:
+        try:
+            return float(input(prompt).replace(",", "."))
+        except ValueError:
+            print("Please enter a valid number.")
+
+
+def ask_yes_no(prompt):
+    while True:
+        answer = input(prompt).strip().lower()
+        if answer in {"j", "y", "ja", "yes"}:
+            return True
+        if answer in {"n", "nein", "no"}:
+            return False
+        print("Please answer with yes or no.")
+
+
+def read_speed(prompt):
+    if ask_yes_no("Is the value given in km/h? (j/n): "):
+        return kmh_to_ms(read_float(prompt))
+    return read_float(prompt)
+
+
+def read_length(prompt):
+    if ask_yes_no("Is the value given in cm? (j/n): "):
+        return cm_to_m(read_float(prompt))
+    return read_float(prompt)
+
+
+def density_calculator():
+    print("Formula: rho = m / V")
+    print("------------------------")
+    target = input("What are you looking for? (rho, m or V): ").strip().lower()
+
+    if target == "m":
+        rho = read_float("Density rho (kg/m^3): ")
+        volume = read_float("Volume V (m^3): ")
+        mass = rho * volume
+        print(f"m = {rho} kg/m^3 * {volume} m^3")
+        print(f"m = {mass:.3f} kg")
+
+    elif target == "rho":
+        mass = read_float("Mass m (kg): ")
+        volume = read_float("Volume V (m^3): ")
+        try:
+            rho = mass / volume
+            print(f"rho = {mass} kg / {volume} m^3")
+            print(f"rho = {rho:.3f} kg/m^3")
+        except ZeroDivisionError:
+            print("The volume V must not be 0!")
+
+    elif target == "v":
+        rho = read_float("Density rho (kg/m^3): ")
+        mass = read_float("Mass m (kg): ")
+        try:
+            volume = mass / rho
+            print(f"V = {mass} kg / {rho} kg/m^3")
+            print(f"V = {volume:.3f} m^3")
+        except ZeroDivisionError:
+            print("The density rho must not be 0!")
+
     else:
-        {var} = get("{var}")
+        error_message()
+        time.sleep(1)
+
+
+def pressure_calculator():
+    print("Formula: p = F / A")
+    print("---------------------------")
+    target = input("What are you looking for? (p, F or A): ").strip().lower()
+
+    if target == "p":
+        force = read_float("Force F (N): ")
+        area = read_float("Area A (m^2): ")
+        try:
+            pressure = force / area
+            print(f"p = {force} N / {area} m^2")
+            print(f"p = {pressure:.3f} Pa")
+        except ZeroDivisionError:
+            print("The area A must not be 0!")
+
+    elif target == "f":
+        pressure = read_float("Pressure p (Pa): ")
+        area = read_float("Area A (m^2): ")
+        force = area * pressure
+        print(f"F = {pressure} Pa * {area} m^2")
+        print(f"F = {force:.3f} N")
+
+    elif target == "a":
+        force = read_float("Force F (N): ")
+        pressure = read_float("Pressure p (Pa): ")
+        try:
+            area = force / pressure
+            print(f"A = {force} N / {pressure} Pa")
+            print(f"A = {area:.3f} m^2")
+        except ZeroDivisionError:
+            print("The pressure p must not be 0!")
+    else:
+        error_message()
+
+
+def hydrostatic_pressure_calculator():
+    print("Formula: p = rho * g * h")
+    print("------------------------")
+    target = input("What are you looking for? (p, rho, g or h): ").strip().lower()
+
+    if target == "p":
+        rho = read_float("Density rho (kg/m^3): ")
+        g = read_float("Gravitational acceleration g (m/s^2): ")
+        height = read_float("Height h (m): ")
+        pressure = rho * g * height
+        print(f"p = {rho} kg/m^3 * {g} m/s^2 * {height} m")
+        print(f"p = {pressure:.3f} Pa")
+
+    elif target == "rho":
+        pressure = read_float("Pressure p (Pa): ")
+        g = read_float("Gravitational acceleration g (m/s^2): ")
+        height = read_float("Height h (m): ")
+        try:
+            rho = pressure / (g * height)
+            print(f"rho = {pressure} Pa / ({g} m/s^2 * {height} m)")
+            print(f"rho = {rho:.3f} kg/m^3")
+        except ZeroDivisionError:
+            print("g * h must not be 0!")
+
+    elif target == "g":
+        pressure = read_float("Pressure p (Pa): ")
+        rho = read_float("Density rho (kg/m^3): ")
+        height = read_float("Height h (m): ")
+        try:
+            g = pressure / (rho * height)
+            print(f"g = {pressure} Pa / ({rho} kg/m^3 * {height} m)")
+            print(f"g = {g:.3f} m/s^2")
+        except ZeroDivisionError:
+            print("rho * h must not be 0!")
+
+    elif target == "h":
+        pressure = read_float("Pressure p (Pa): ")
+        rho = read_float("Density rho (kg/m^3): ")
+        g = read_float("Gravitational acceleration g (m/s^2): ")
+        try:
+            height = pressure / (rho * g)
+            print(f"h = {pressure} Pa / ({rho} kg/m^3 * {g} m/s^2)")
+            print(f"h = {height:.3f} m")
+        except ZeroDivisionError:
+            print("rho * g must not be 0!")
+
+    else:
+        error_message()
+
+
+def heat_calculator():
+    print("Formula: Q = c * m * ΔT")
+    print("------------------------\n")
+
+    specific_heat_values = {
+        "Water": 4180,
+        "Ice": 2100,
+        "Aluminium": 900,
+        "Iron": 450,
+        "Copper": 385,
+        "Lead": 130,
+        "Air": 1000,
+        "Wood": 1700,
+        "Wax": 2931,
+    }
+    print("Typical values for c [J/(kg*K)]:")
+    for substance, value in specific_heat_values.items():
+        print(f"  {substance:<12} = {value}")
+    print("")
+
+    target = input("What are you looking for? (Q, m, c or ΔT): ").strip().lower()
+
+    if target == "q":
+        c = read_float("Specific heat capacity c (J/(kg*K)): ")
+        mass = read_float("Mass m (kg): ")
+        delta_t = read_float("Temperature change ΔT (K or °C): ")
+        heat = c * mass * delta_t
+        print(f"Q = {c} J/(kg*K) * {mass} kg * {delta_t} K")
+        print(f"Q = {heat:.2f} J")
+
+    elif target == "m":
+        heat = read_float("Heat energy Q (J): ")
+        c = read_float("Specific heat capacity c (J/(kg*K)): ")
+        delta_t = read_float("Temperature change ΔT (K or °C): ")
+        try:
+            mass = heat / (c * delta_t)
+            print(f"m = {heat} J / ({c} J/(kg*K) * {delta_t} K)")
+            print(f"m = {mass:.4f} kg")
+        except ZeroDivisionError:
+            print("c * ΔT must not be 0!")
+
+    elif target == "c":
+        heat = read_float("Heat energy Q (J): ")
+        mass = read_float("Mass m (kg): ")
+        delta_t = read_float("Temperature change ΔT (K or °C): ")
+        try:
+            c = heat / (mass * delta_t)
+            print(f"c = {heat} J / ({mass} kg * {delta_t} K)")
+            print(f"c = {c:.2f} J/(kg*K)")
+        except ZeroDivisionError:
+            print("m * ΔT must not be 0!")
+
+    elif target in {"t", "delt", "dt"}:
+        heat = read_float("Heat energy Q (J): ")
+        mass = read_float("Mass m (kg): ")
+        c = read_float("Specific heat capacity c (J/(kg*K)): ")
+        try:
+            delta_t = heat / (mass * c)
+            print(f"ΔT = {heat} J / ({mass} kg * {c} J/(kg*K))")
+            print(f"ΔT = {delta_t:.2f} K")
+        except ZeroDivisionError:
+            print("m * c must not be 0!")
+
+    else:
+        error_message()
+
+
+def melting_heat_calculator():
+    print("Formula: Qs = qs * m")
+    print("------------------------\n")
+    target = input("What are you looking for? (Qs, m or qs): ").strip().lower()
+
+    if target == "qs":
+        specific_heat = read_float("Specific melting heat qs (J/kg): ")
+        mass = read_float("Mass m (kg): ")
+        heat = specific_heat * mass
+        print(f"Qs = {specific_heat} J/kg * {mass} kg")
+        print(f"Qs = {heat:.2f} J")
+
+    elif target == "m":
+        heat = read_float("Melting heat Qs (J): ")
+        specific_heat = read_float("Specific melting heat qs (J/kg): ")
+        try:
+            mass = heat / specific_heat
+            print(f"m = {heat} J / {specific_heat} J/kg")
+            print(f"m = {mass:.4f} kg")
+        except ZeroDivisionError:
+            print("The specific melting heat must not be 0!")
+
+    elif target == "qs":
+        heat = read_float("Melting heat Qs (J): ")
+        mass = read_float("Mass m (kg): ")
+        try:
+            specific_heat = heat / mass
+            print(f"qs = {heat} J / {mass} kg")
+            print(f"qs = {specific_heat:.2f} J/kg")
+        except ZeroDivisionError:
+            print("The mass m must not be 0!")
+    else:
+        error_message()
+
+
+def vaporization_heat_calculator():
+    print("Formula: Qv = qv * m")
+    print("------------------------\n")
+    target = input("What are you looking for? (Qv, m or qv): ").strip().lower()
+
+    if target == "qv":
+        specific_heat = read_float("Specific vaporization heat qv (J/kg): ")
+        mass = read_float("Mass m (kg): ")
+        heat = specific_heat * mass
+        print(f"Qv = {specific_heat} J/kg * {mass} kg")
+        print(f"Qv = {heat:.2f} J")
+
+    elif target == "m":
+        heat = read_float("Vaporization heat Qv (J): ")
+        specific_heat = read_float("Specific vaporization heat qv (J/kg): ")
+        try:
+            mass = heat / specific_heat
+            print(f"m = {heat} J / {specific_heat} J/kg")
+            print(f"m = {mass:.4f} kg")
+        except ZeroDivisionError:
+            print("The specific vaporization heat must not be 0!")
+
+    elif target == "qv":
+        heat = read_float("Vaporization heat Qv (J): ")
+        mass = read_float("Mass m (kg): ")
+        try:
+            specific_heat = heat / mass
+            print(f"qv = {heat} J / {mass} kg")
+            print(f"qv = {specific_heat:.2f} J/kg")
+        except ZeroDivisionError:
+            print("The mass m must not be 0!")
+
+    else:
+        error_message()
+
+
+def steam_heating_calculator():
+    print("Formula: Q = c * m * ΔT")
+    print("------------------------\n")
+
+    specific_heat_values = {
+        "Steam": 2010,
+        "Air": 1000,
+        "Nitrogen steam": 1040,
+        "Oxygen steam": 918,
+        "Carbon dioxide steam": 839,
+        "Hydrogen steam": 14300,
+        "Helium steam": 5193,
+    }
+    print("Typical values for c [J/(kg*K)]:")
+    for substance, value in specific_heat_values.items():
+        print(f" {substance:<18} = {value}")
+    print("")
+
+    target = input("What are you looking for? (Q, m, c or ΔT): ").strip().lower()
+
+    if target == "q":
+        c = read_float("Specific heat capacity c (J/(kg*K)): ")
+        mass = read_float("Mass m (kg): ")
+        delta_t = read_float("Temperature change ΔT (K or °C): ")
+        heat = c * mass * delta_t
+        print(f"Q = {c} J/(kg*K) * {mass} kg * {delta_t} K")
+        print(f"Q = {heat:.2f} J")
+
+    elif target == "m":
+        heat = read_float("Heat energy Q (J): ")
+        c = read_float("Specific heat capacity c (J/(kg*K)): ")
+        delta_t = read_float("Temperature change ΔT (K or °C): ")
+        try:
+            mass = heat / (c * delta_t)
+            print(f"m = {heat} J / ({c} J/(kg*K) * {delta_t} K)")
+            print(f"m = {mass:.4f} kg")
+        except ZeroDivisionError:
+            print("c * ΔT must not be 0!")
+
+    elif target == "c":
+        heat = read_float("Heat energy Q (J): ")
+        mass = read_float("Mass m (kg): ")
+        delta_t = read_float("Temperature change ΔT (K or °C): ")
+        try:
+            c = heat / (mass * delta_t)
+            print(f"c = {heat} J / ({mass} kg * {delta_t} K)")
+            print(f"c = {c:.2f} J/(kg*K)")
+        except ZeroDivisionError:
+            print("m * ΔT must not be 0!")
+
+    elif target in {"t", "delt", "dt"}:
+        heat = read_float("Heat energy Q (J): ")
+        mass = read_float("Mass m (kg): ")
+        c = read_float("Specific heat capacity c (J/(kg*K)): ")
+        try:
+            delta_t = heat / (mass * c)
+            print(f"ΔT = {heat} J / ({mass} kg * {c} J/(kg*K))")
+            print(f"ΔT = {delta_t:.2f} K")
+        except ZeroDivisionError:
+            print("m * c must not be 0!")
+
+    else:
+        error_message()
+
+
+def velocity_calculator():
+    print("Formula: v = s / t")
+    print("------------------------\n")
+    target = input("What are you looking for? (v, s or t): ").strip().lower()
+
+    if target == "v":
+        distance = read_length("Distance s (m): ")
+        time_value = read_float("Time t (s): ")
+        try:
+            velocity = distance / time_value
+            print(f"v = {distance} m / {time_value} s")
+            print(f"v = {velocity:.2f} m/s")
+        except ZeroDivisionError:
+            print("The time t must not be 0!")
+
+    elif target == "s":
+        velocity = read_speed("Velocity v (m/s): ")
+        time_value = read_float("Time t (s): ")
+        distance = velocity * time_value
+        print(f"s = {velocity} m/s * {time_value} s")
+        print(f"s = {distance:.2f} m")
+
+    elif target == "t":
+        velocity = read_speed("Velocity v (m/s): ")
+        distance = read_length("Distance s (m): ")
+        try:
+            time_value = distance / velocity
+            print(f"t = {distance} m / {velocity} m/s")
+            print(f"t = {time_value:.2f} s")
+        except ZeroDivisionError:
+            print("The velocity v must not be 0!")
+
+    else:
+        error_message()
+
+
+def acceleration_calculator():
+    print("Formula: a = Δv / Δt")
+    print("------------------------\n")
+    target = input("What are you looking for? (a, dv or dt): ").strip().lower()
+
+    if target == "a":
+        delta_v = read_speed("Velocity change Δv (m/s): ")
+        delta_t = read_float("Time change Δt (s): ")
+        try:
+            acceleration = delta_v / delta_t
+            print(f"a = {delta_v} m/s / {delta_t} s")
+            print(f"a = {acceleration:.2f} m/s^2")
+        except ZeroDivisionError:
+            print("The time change must not be 0!")
+
+    elif target == "dv":
+        acceleration = read_float("Acceleration a (m/s^2): ")
+        delta_t = read_float("Time change Δt (s): ")
+        delta_v = acceleration * delta_t
+        print(f"Δv = {acceleration} m/s^2 * {delta_t} s")
+        print(f"Δv = {delta_v:.2f} m/s")
+
+    elif target == "dt":
+        acceleration = read_float("Acceleration a (m/s^2): ")
+        delta_v = read_speed("Velocity change Δv (m/s): ")
+        try:
+            delta_t = delta_v / acceleration
+            print(f"Δt = {delta_v} m/s / {acceleration} m/s^2")
+            print(f"Δt = {delta_t:.2f} s")
+        except ZeroDivisionError:
+            print("The acceleration a must not be 0!")
+
+    else:
+        error_message()
+
+
+def uniformly_moving_distance_calculator():
+    print("Formula: s = v * t")
+    print("------------------------\n")
+    target = input("What are you looking for? (s, v or t): ").strip().lower()
+
+    if target == "s":
+        velocity = read_speed("Velocity v (m/s): ")
+        time_value = read_float("Time t (s): ")
+        distance = velocity * time_value
+        print(f"s = {velocity} m/s * {time_value} s")
+        print(f"s = {distance:.2f} m")
+
+    elif target == "v":
+        distance = read_length("Distance s (m): ")
+        time_value = read_float("Time t (s): ")
+        try:
+            velocity = distance / time_value
+            print(f"v = {distance} m / {time_value} s")
+            print(f"v = {velocity:.2f} m/s")
+        except ZeroDivisionError:
+            print("The time t must not be 0!")
+
+    elif target == "t":
+        velocity = read_speed("Velocity v (m/s): ")
+        distance = read_length("Distance s (m): ")
+        try:
+            time_value = distance / velocity
+            print(f"t = {distance} m / {velocity} m/s")
+            print(f"t = {time_value:.2f} s")
+        except ZeroDivisionError:
+            print("The velocity v must not be 0!")
+
+    else:
+        error_message()
+
+
+def force_calculator():
+    print("Formula: F = m * a")
+    print("------------------------\n")
+    target = input("What are you looking for? (F, m or a): ").strip().lower()
+
+    if target == "f":
+        mass = read_float("Mass m (kg): ")
+        acceleration = read_float("Acceleration a (m/s^2): ")
+        force = mass * acceleration
+        print(f"F = {mass} kg * {acceleration} m/s^2")
+        print(f"F = {force:.2f} N")
+
+    elif target == "m":
+        force = read_float("Force F (N): ")
+        acceleration = read_float("Acceleration a (m/s^2): ")
+        try:
+            mass = force / acceleration
+            print(f"m = {force} N / {acceleration} m/s^2")
+            print(f"m = {mass:.4f} kg")
+        except ZeroDivisionError:
+            print("The acceleration a must not be 0!")
+
+    elif target == "a":
+        mass = read_float("Mass m (kg): ")
+        force = read_float("Force F (N): ")
+        try:
+            acceleration = force / mass
+            print(f"a = {force} N / {mass} kg")
+            print(f"a = {acceleration:.2f} m/s^2")
+        except ZeroDivisionError:
+            print("The mass m must not be 0!")
+
+    else:
+        error_message()
+
+
+def weight_force_calculator():
+    print("Formula: Fg = m * g")
+    print("------------------------\n")
+
+    g_values = {
+        "Earth": 9.81,
+        "Moon": 1.62,
+        "Mars": 3.71,
+        "Jupiter": 24.79,
+    }
+    print("Typical values for g [m/s^2]:")
+    for planet, value in g_values.items():
+        print(f"{planet:<10} = {value} m/s^2")
+    print("")
+
+    target = input("What are you looking for? (Fg, m or g): ").strip().lower()
+
+    if target == "fg":
+        mass = read_float("Mass m (kg): ")
+        g = read_float("Gravitational acceleration g (m/s^2): ")
+        force = mass * g
+        print(f"Fg = {mass} kg * {g} m/s^2")
+        print(f"Fg = {force:.2f} N")
+
+    elif target == "m":
+        weight_force = read_float("Weight force Fg (N): ")
+        g = read_float("Gravitational acceleration g (m/s^2): ")
+        try:
+            mass = weight_force / g
+            print(f"m = {weight_force} N / {g} m/s^2")
+            print(f"m = {mass:.4f} kg")
+        except ZeroDivisionError:
+            print("The gravitational acceleration g must not be 0!")
+
+    elif target == "g":
+        weight_force = read_float("Weight force Fg (N): ")
+        mass = read_float("Mass m (kg): ")
+        try:
+            g = weight_force / mass
+            print(f"g = {weight_force} N / {mass} kg")
+            print(f"g = {g:.2f} m/s^2")
+        except ZeroDivisionError:
+            print("The mass m must not be 0!")
+
+    else:
+        error_message()
+
+
+def spring_force_calculator():
+    print("Formula: F = D * s")
+    print("------------------------\n")
+    target = input("What are you looking for? (F, D or s): ").strip().lower()
+
+    if target == "f":
+        spring_constant = read_float("Spring constant D (N/m): ")
+        displacement = read_length("Displacement s (m): ")
+        force = spring_constant * displacement
+        print(f"F = {spring_constant} N/m * {displacement} m")
+        print(f"F = {force:.2f} N")
+
+    elif target == "d":
+        force = read_float("Spring force F (N): ")
+        displacement = read_length("Displacement s (m): ")
+        try:
+            spring_constant = force / displacement
+            print(f"D = {force} N / {displacement} m")
+            print(f"D = {spring_constant:.2f} N/m")
+        except ZeroDivisionError:
+            print("The displacement s must not be 0!")
+
+    elif target == "s":
+        spring_constant = read_float("Spring constant D (N/m): ")
+        force = read_float("Spring force F (N): ")
+        try:
+            displacement = force / spring_constant
+            print(f"s = {force} N / {spring_constant} N/m")
+            print(f"s = {displacement:.2f} m")
+        except ZeroDivisionError:
+            print("The spring constant D must not be 0!")
+    else:
+        error_message()
+
+
+def work_calculator():
+    print("Formula: W = F * s")
+    print("------------------------\n")
+
+    target = input("What are you looking for? (W, F or s): ").strip().lower()
+
+    if target == "w":
+        force = read_float("Force F (N): ")
+        distance = read_length("Distance s (m): ")
+        work = force * distance
+        print(f"W = {force} N * {distance} m")
+        print(f"W = {work:.2f} J")
+
+    elif target == "f":
+        work_value = read_float("Work W (J): ")
+        distance = read_length("Distance s (m): ")
+        try:
+            force = work_value / distance
+            print(f"F = {work_value} J / {distance} m")
+            print(f"F = {force:.2f} N")
+        except ZeroDivisionError:
+            print("The distance s must not be 0!")
+
+    elif target == "s":
+        force = read_float("Force F (N): ")
+        work_value = read_float("Work W (J): ")
+        try:
+            distance = work_value / force
+            print(f"s = {work_value} J / {force} N")
+            print(f"s = {distance:.2f} m")
+        except ZeroDivisionError:
+            print("The force F must not be 0!")
+
+    else:
+        error_message()
+
+
+def kinetic_energy_calculator():
+    print("Formula: Ek = 1/2 * m * v^2")
+    print("------------------------\n")
+    target = input("What are you looking for? (Ek, m or v): ").strip().lower()
+
+    if target == "ek":
+        mass = read_float("Mass m (kg): ")
+        velocity = read_speed("Velocity v (m/s): ")
+        kinetic_energy = 0.5 * mass * velocity ** 2
+        print(f"Ek = 0.5 * {mass} kg * ({velocity} m/s)^2")
+        print(f"Ek = {kinetic_energy:.1f} J")
+
+    elif target == "m":
+        kinetic_energy = read_float("Kinetic energy Ek (J): ")
+        velocity = read_speed("Velocity v (m/s): ")
+        try:
+            mass = (2 * kinetic_energy) / velocity ** 2
+            print(f"m = (2 * {kinetic_energy} J) / ({velocity} m/s)^2")
+            print(f"m = {mass:.4f} kg")
+        except ZeroDivisionError:
+            print("The velocity v must not be 0!")
+
+    elif target == "v":
+        kinetic_energy = read_float("Kinetic energy Ek (J): ")
+        mass = read_float("Mass m (kg): ")
+        try:
+            velocity = (2 * kinetic_energy / mass) ** 0.5
+            print(f"v = sqrt((2 * {kinetic_energy} J) / {mass} kg)")
+            print(f"v = {velocity:.2f} m/s")
+        except ZeroDivisionError:
+            print("The mass m must not be 0!")
+
+    else:
+        error_message()
+
+
+def potential_energy_calculator():
+    print("Formula: Ep = m * g * h")
+    print("------------------------\n")
+    target = input("What are you looking for? (Ep, m, g or h): ").strip().lower()
+
+    g_values = {
+        "Earth": 9.81,
+        "Moon": 1.62,
+        "Mars": 3.71,
+        "Jupiter": 24.79,
+    }
+    print("Typical values for g [m/s^2]:")
+    for planet, value in g_values.items():
+        print(f"{planet:<10} = {value} m/s^2")
+    print("")
+
+    if target == "ep":
+        mass = read_float("Mass m (kg): ")
+        g = read_float("Gravitational acceleration g (m/s^2): ")
+        height = read_float("Height h (m): ")
+        potential_energy = mass * g * height
+        print(f"Ep = {mass} kg * {g} m/s^2 * {height} m")
+        print(f"Ep = {potential_energy:.2f} J")
+
+    elif target == "m":
+        potential_energy = read_float("Potential energy Ep (J): ")
+        g = read_float("Gravitational acceleration g (m/s^2): ")
+        height = read_float("Height h (m): ")
+        try:
+            mass = potential_energy / (g * height)
+            print(f"m = {potential_energy} J / ({g} m/s^2 * {height} m)")
+            print(f"m = {mass:.4f} kg")
+        except ZeroDivisionError:
+            print("g * h must not be 0!")
+
+    elif target == "g":
+        potential_energy = read_float("Potential energy Ep (J): ")
+        mass = read_float("Mass m (kg): ")
+        height = read_float("Height h (m): ")
+        try:
+            g = potential_energy / (mass * height)
+            print(f"g = {potential_energy} J / ({mass} kg * {height} m)")
+            print(f"g = {g:.2f} m/s^2")
+        except ZeroDivisionError:
+            print("m * h must not be 0!")
+
+    elif target == "h":
+        potential_energy = read_float("Potential energy Ep (J): ")
+        mass = read_float("Mass m (kg): ")
+        g = read_float("Gravitational acceleration g (m/s^2): ")
+        try:
+            height = potential_energy / (mass * g)
+            print(f"h = {potential_energy} J / ({mass} kg * {g} m/s^2)")
+            print(f"h = {height:.2f} m")
+        except ZeroDivisionError:
+            print("m * g must not be 0!")
+
+    else:
+        error_message()
+
+
+def power_calculator():
+    print("Formula: P = W / t")
+    print("------------------------\n")
+    target = input("What are you looking for? (P, W or t): ").strip().lower()
+
+    if target == "p":
+        work_value = read_float("Work W (J): ")
+        time_value = read_float("Time t (s): ")
+        try:
+            power = work_value / time_value
+            print(f"P = {work_value} J / {time_value} s")
+            print(f"P = {power:.2f} W")
+        except ZeroDivisionError:
+            print("The time t must not be 0!")
+
+    elif target == "w":
+        power = read_float("Power P (W): ")
+        time_value = read_float("Time t (s): ")
+        work_value = power * time_value
+        print(f"W = {power} W * {time_value} s")
+        print(f"W = {work_value:.2f} J")
+
+    elif target == "t":
+        power = read_float("Power P (W): ")
+        work_value = read_float("Work W (J): ")
+        try:
+            time_value = work_value / power
+            print(f"t = {work_value} J / {power} W")
+            print(f"t = {time_value:.2f} s")
+        except ZeroDivisionError:
+            print("The power P must not be 0!")
+
+    else:
+        error_message()
+
+
+# Backward-compatible aliases for the original German function names.
+def fehler():
+    error_message()
+
 
 def dicht_rechner():
-    print("Die Formel lautet:  p = m / V ")
-    print("------------------------")
-    ges = input("Was ist gesucht? (p, m oder V): ").strip().lower()
+    density_calculator()
 
-    prompts = {
-        "m": "Masse m (kg): ",
-        "p": "Dichte p (kg/m³): ",
-        "V": "Volumen V (m³):"
-    }
-    def get(var):
-        return float(input(prompts [var]))
-    
-    if ges == "m":
-        rho = get("p")
-        V = get("V")
-        m = rho * V
-        print(f"m = {rho} kg/m³ * {V} m³")
-        print(f"m = {m:1f} kg")
-
-    elif ges == "p":
-        m = get("m")
-        V = get("V")
-        try:
-            rho = m / V
-            print(f"p = {m} kg / {V} m³")
-            print(f"p = {rho:3f} kg/m³")
-        except ZeroDivisionError:
-            print("Das Volumen V darf nicht 0 sein!")
-    
-
-    elif ges == "v":
-        rho = get("p")
-        m = get("m")
-        try:
-            V = m / rho
-            print(f"V = {m} kg / {rho} kg/m³")
-            print(f"V = {V:3f} m³")
-        except ZeroDivisionError:
-            print("Die Dichte p darf nicht 0 sein!")
-
-    else:
-        fehler()
-        time.sleep(3)
 
 def druck_rechner():
-    print("Die Formel lautet: p = F/A")
-    print("---------------------------")
-    ges = input("Was ist gesucht (p, F oder A)?: ").strip().lower()
+    pressure_calculator()
 
-    prompts = {
-        "p": "Druck p (Pa): ",
-        "F": "Kraft F (N): ",
-        "A": "Fläche A (m²): "
-    }
-    def get(var):
-        return float(input (prompts [var]))
-
-    if ges == "p":
-        F = get("F")
-        A = get("A")
-        try:
-            p = F / A
-            print(f"p = {F} N / {A} m²")
-            print(f"p = {p:.3f} Pa")
-        except ZeroDivisionError:
-            print("Die Fläche A darf nicht 0 sein!")
-
-    elif ges == "f":
-        p = get("p")
-        A = get("A")
-        F = A * p
-        print(f"F = {p} Pa * {A} m²")
-        print(f"F = {F:.3f} N")
-
-    elif ges == "a":
-        F = get("F")
-        p = get("p")
-        try:
-            A = F / p
-            print(f"A = {F} N / {p} Pa")
-            print(f"A = {A:.3f} m²")
-        except ZeroDivisionError:
-            print("Der Druck p darf nicht 0 sein!")
-    else:
-       fehler()
 
 def waerme_rechner():
-    print("Formel: Q = c * m * ΔT")
-    print("------------------------\n")
-    
-    # Typische spezifische Wärmekapazitäten in J/(kg*K)
-    c_werte = {
-        "Wasser": 4180,
-        "Eis": 2100,
-        "Aluminium": 900,
-        "Eisen": 450,
-        "Kupfer": 385,
-        "Blei": 130,
-        "Luft": 1000,
-        "Holz": 1700,
-        "Wachs": 2931
-    }
-    print("Typische Werte für c [J/(kg*K)]:")
-    for stoff, wert in c_werte.items(): 
-        print(f"  {stoff:<12} = {wert}")
-    print("")
-    gesucht = input("Was ist gesucht? (Q, m, c oder ΔT): ").strip().lower()
-    
-    prompts = {
-        "q":  "Wärmeenergie Q (J): ",
-        "m":  "Masse m (kg): ",
-        "c":  "spezifische Wärmekapazität c (J/(kg*K)): ",
-        "t":  "Temperaturänderung ΔT (K oder °C): "
-    }
+    heat_calculator()
 
-    def get(var):
-        return float(input(prompts[var]))
-    
-    if gesucht == "q":
-        c = get("c")
-        m = get("m")
-        dT = get("t")
-        Q = c * m * dT
-        print(f"Q = {c} J/(kg*K) * {m} kg * {dT} K")
-        print(f"Q = {Q:.2f} J")       
-
-    elif gesucht == "m":
-        Q = get("q")
-        c = get("c")
-        dT = get("t")
-        try:
-            m = Q / (c * dT)
-            print(f"m = {Q} J / ({c} J/(kg*K) * {dT} K)")
-            print(f"m = {m:.4f} kg")
-        except ZeroDivisionError:
-            print("c * ΔT darf nicht 0 ergeben!")
-
-    elif gesucht == "c":
-        Q = get("q")
-        m = get("m")
-        dT = get("t")
-        try:
-            c = Q / (m * dT)
-            print(f"c = {Q} J / ({m} kg * {dT} K)")
-            print(f"c = {c:.2f} J/(kg*K)")
-        except ZeroDivisionError:
-            print("m * ΔT darf nicht 0 ergeben!")
-
-    elif gesucht in ("t", "Δt", "dt"):
-        Q = get("q")
-        m = get("m")
-        c = get("c")
-        try:
-            dT = Q / (m * c)
-            print(f"ΔT = {Q} J / ({m} kg * {c} J/(kg*K))")
-            print(f"ΔT = {dT:.2f} K")
-        except ZeroDivisionError:
-            print("m * c darf nicht 0 ergeben!")
-
-    else:
-        fehler()
 
 def schmelz_rechner():
-    print("Formel: Qs = qs ⋅ m ")
-    print("------------------------\n")
-    ges = input("Was ist gesucht? (Qs, m oder qs): ").strip()
+    melting_heat_calculator()
 
-    prompts = {
-        "Qs": "Schmelzwärme Qs (J): ",
-        "m": "Masse m (kg): ",
-        "qs": "spezifische Schmelzwärme qs (J/kg): "
-    }
-
-    def get(var):
-        return float(input(prompts[var]))
-    
-    if ges == "Qs":
-        qs = get("qs")
-        m = get("m")
-        Qs = qs * m
-        print(f"Qs = {qs} J/kg * {m} kg")
-        print(f"Qs = {Qs:.2f} J")
-
-    elif ges == "m":
-        Qs = get("Qs")
-        qs = get("qs") 
-        try:
-            m = Qs / qs
-            print(f"m = {Qs} J / {qs} J/kg")
-            print(f"m = {m:.4f} kg")
-        except ZeroDivisionError:
-            print("Die spezifische Schmelzwärme darf nicht 0 sein!")
-
-    elif ges == "qs":
-        Qs = get("Qs")
-        m = get("m")
-        try:
-            qs = Qs / m
-            print(f"qs = {Qs} J / {m} kg")
-            print(f"qs = {qs:.2f} J/kg")
-        except ZeroDivisionError:
-            print("Die Masse m darf nicht 0 sein!")
-    else:
-        fehler()
 
 def verdampfungs_rechner():
-    print("Formel: Qv = qv * m")
-    print("------------------------\n")
-    ges = input("Was ist gesucht? (Qv, m oder qv): ").strip()
+    vaporization_heat_calculator()
 
-    prompts = {
-        "Qv": "Verdampfungswärme Qv (J): ",
-        "m": "Masse m (kg): ",
-        "qv": "spezifische Verdampfungswärme qv (J/kg): "
-    }
-
-    def get(var):
-        return float(input(prompts[var]))
-    
-    if ges == "Qv":
-        qv = get("qv")
-        m = get("m")
-        Qv = qv * m
-        print(f"Qv = {qv} J/kg * {m} kg")
-        print(f"Qv = {Qv:.2f} J")
-
-    elif ges == "m":
-        Qv = get("Qv")
-        qv = get("qv")
-        try:
-            m = Qv / qv
-            print(f"m = {Qv} J / {qv} J/kg")
-            print(f"m = {m:.4f} kg")
-        except ZeroDivisionError:
-            print("Die spezifische Verdampfungswärme darf nicht 0 sein!")
-
-    elif ges == "qv":
-        Qv = get("Qv")
-        m = get("m")
-        try:
-            qv = Qv / m
-            print(f"qv = {Qv} J / {m} kg")
-            print(f"qv = {qv:.2f} J/kg")
-        except ZeroDivisionError:
-            print("Die Masse m darf nicht 0 sein!")
-
-    else:
-        fehler()
 
 def dampferwaermung_rechner():
-    print("Formel: Q = c * m * ΔT")
-    print("------------------------\n")
+    steam_heating_calculator()
 
-    # Typische spezifische Wärmekapazitäten von Dämpfen in J/(kg*K)
-    c_werte = {
-        "Wasserdampf": 2010,
-        "Luft": 1000,
-        "Stickstoff-Dampf": 1040,
-        "Sauerstoff-Dampf": 918,
-        "Kohlendioxid-Dampf": 839,
-        "Wasserstoff-Dampf": 14300,
-        "Helium-Dampf": 5193
-    }
-    print("Typische Werte für c [J/(kg*K)]:")
-    for stoff, wert in c_werte.items():
-        print(f" {stoff:<15} = {wert}")
-    print("")
-    ges = input("Was ist gesucht? (Q, m, c oder ΔT -> t): ").strip().lower()
-    
-    prompts = {
-        "q": "Wärmeenergie Q (J): ",
-        "m": "Masse m (kg): ",
-        "c": "spezifische Wärmekapazität c (J/(kg*K)): ",
-        "t": "Temperaturänderung ΔT (K oder °C): "
-    }
-    def get(var):
-        return float(input(prompts[var]))
-    
-    if ges == "q":
-        c = get("c")
-        m = get("m")
-        dT = get("t")
-        Q = c * m * dT
-        print(f"Q = {c} J/(kg*K) * {m} kg * {dT} K")
-        print(f"Q = {Q:.2f} J")
-
-    elif ges == "m":
-        Q = get("q")
-        c = get("c")
-        dT = get("t")
-        try:
-            m = Q / (c * dT)
-            print(f"m = {Q} J / ({c} J/(kg*K) * {dT} K)")
-            print(f"m = {m:.4f} kg")
-        except ZeroDivisionError:
-            print("c * ΔT darf nicht 0 sein!")
-
-    elif ges == "c":
-        Q = get("q")
-        m = get("m")
-        dT = get("t")
-        try:
-            c = Q / (m * dT)
-            print(f"c = {Q} J / ({m} kg * {dT} K)")
-            print(f"c = {c:.2f} J/(kg*K)")
-        except ZeroDivisionError:
-            print("m * ΔT darf nicht 0 sein!")
-
-    elif ges in ("t", "Δt", "dt"):
-        Q = get("q")
-        m = get("m")
-        c = get("c")
-        try:
-            dT = Q / (m * c)
-            print(f"ΔT = {Q} J / ({m} kg * {c} J/(kg*K))")
-            print(f"ΔT = {dT:.2f} K")
-        except ZeroDivisionError:
-            print("m * c darf nicht 0 sein!")
-
-    else:
-        fehler()
 
 def geschwindigkeit_rechner():
-    print("Formel: v = s / t")
-    print("------------------------\n")
-    ges = input("Was ist gesucht? (v, s oder t): ").strip().lower()
+    velocity_calculator()
 
-    prompts = {
-        "v": "Geschwindigkeit v (m/s): ",
-        "s": "Strecke s (m): ",
-        "t": "Zeit t (s):"
-    }
-
-    def get(var):
-        return float(input(prompts[var]))
-    
-    if ges == "v":
-        if input("Wird s in cm angegeben? (j/n): ").strip().lower() == "j":
-            s = cm_to_m(get("s"))
-        else:
-            s = get("s")
-        t = get("t")
-        try:
-            v = s / t
-            print(f"v = {s} m / {t} s")
-            print(f"v = {v:.2f} m/s")
-        except ZeroDivisionError:
-            print("Die Zeit t darf nicht 0 sein!")
-
-    elif ges == "s":
-        if input("Wird v in km/h angegeben? (j/n): ").strip().lower() == "j":
-            v = kmh_to_ms(get("v"))
-        else:
-            v = get("v")
-        t = get("t")
-        s = v * t
-        print(f"s = {v} m/s * {t} s")
-        print(f"s = {s:.2f} m")
-
-    elif ges == "t":
-        if input("Wird v in km/h angegeben? (j/n): ").strip().lower() == "j":
-            v = kmh_to_ms(get("v"))
-        else:
-            v = get("v")
-        if input("Wird s in cm angegeben? (j/n): ").strip().lower() == "j":
-            s = cm_to_m(get("s"))
-        else:
-            s = get("s")
-        try:
-            t = s / v
-            print(f"t = {s} m / {v} m/s")
-            print(f"t = {t:.2f} s")
-        except ZeroDivisionError:
-            print("Die Geschwindigkeit v darf nicht 0 sein!")
-
-    else:
-        fehler()
 
 def beschleunigung_rechner():
-    print("Formel: a = Δv / Δt")
-    print("------------------------\n")
-    ges = input("Was ist gesucht? (a, dv oder dt): ").strip().lower()
+    acceleration_calculator()
 
-    prompts = {
-        "a": "Beschleunigung a (m/s²): ",
-        "dv": "Geschwindigkeitsänderung Δv (m/s oder km/h): ",
-        "dt": "Zeitänderung Δt (s): "
-    }
-    def get(var):
-        return float(input(prompts[var]))
-    
-    if ges == "a":
-        if input("Wird Δv in km/h angegeben? (j/n): ").strip().lower() == "j":
-            dv = kmh_to_ms(get("dv"))
-        else:
-            dv = get("dv")
-        dt = get("dt")
-        try:
-            a = dv / dt
-            print(f"a = {dv} m/s / {dt} s")
-            print(f"a = {a:.2f} m/s²")
-        except ZeroDivisionError:
-            print("Die Zeitänderung darf nicht 0 sein!")
-    
-    elif ges == "dv":
-        a = get("a")
-        dt = get("dt")
-        dv = a * dt
-        print(f"Δv = {a} m/s² * {dt} s")
-        print(f"Δv = {dv:.2f} m/s")
-        
-    elif ges == "dt":
-        a = get("a")
-        if input("Wird Δv in km/h angegeben? (j/n): ").strip().lower() == "j":
-            dv = kmh_to_ms(get("dv"))
-        else:
-            dv = get("dv")
-        try:
-            dt = dv / a
-            print(f"Δt = {dv} m/s / {a} m/s²")
-            print(f"Δt = {dt:.2f} s")
-        except ZeroDivisionError:
-            print("Die Beschleunigung a darf nicht 0 sein!")
-
-    else:
-        fehler()
 
 def weg_gleichmäßig_bewegung_rechner():
-    print("Formel: s = v * t")
-    print("Gesucht: s, v oder t\n")
-    print("")
-    ges = input("Was ist gesucht? (s, v oder t): ").strip().lower()
+    uniformly_moving_distance_calculator()
 
-    prompts = {
-        "s": "Weg s (m): ",
-        "v": "Geschwindigkeit v (m/s oder km/h): ",
-        "t": "Zeit t (s): "
-    }
-    
-    def get(var):
-        return float(input(prompts[var]))
-    
-    if ges == "s":
-        if input("Wird v in km/h angegeben? (j/n): ").strip().lower() == "j":
-            v = kmh_to_ms(get("v"))
-        else:
-            v = get("v")
-        t = get("t")
-        s = v * t
-        print(f"s = {v} m/s * {t} s")
-        print(f"s = {s:.2f} m")
-    
-    elif ges == "v":
-        if input("Wird s in cm angegeben? (j/n): ").strip().lower() == "j":
-            s = cm_to_m(get("s"))
-        else:
-            s = get("s")
-        t = get("t")
-        if t == 0:
-            print("Die Zeit t darf nicht 0 sein!")
-            return
-        try:
-            v = s / t
-            print(f"v = {s} m / {t} s")
-            print(f"v = {v:.2f} m/s")
-        except ZeroDivisionError:
-            print("Der Weg s darf nicht 0 sein!")
-    
-    elif ges == "t":
-        if input("Wird v in km/h angegeben? (j/n): ").strip().lower() == "j":
-            v = kmh_to_ms(get("v"))
-        else:
-            v = get("v")
-        if input("Wird s in cm angegeben? (j/n): ").strip().lower() == "j":
-            s = cm_to_m(get("s"))
-        else:
-            s = get("s")
-        try:
-            t = s / v
-            print(f"t = {s} m / {v} m/s")
-            print(f"t = {t:.2f} s")
-        except ZeroDivisionError:
-            print("Die Geschwindigkeit v ddarf nicht 0 sein")
-    
-    else: 
-        fehler()
 
 def kraft_rechner():
-    print("Formel: F = m * a")
-    print("Gesucht: F, m oder a")
-    print("")
-    ges = input("Was ist gesucht? (F, m oder a): ").strip().lower()
+    force_calculator()
 
-    prompts = {
-        "F": "Kraft F (N): ",
-        "m": "Masse m (kg): ",
-        "a": "Beschleunigung a (m/s² oder km/h): "
-    }
-    def get(var):
-        return float(input(prompts[var]))
-    
-    if ges == "f":
-        if input("Wird a in km/h angegeben? (j/n): ").strip().lower() == "j":
-            a = kmh_to_ms(get("a"))
-        else:
-            a = get("a")
-        m = get("m")
-        F = m * a
-        print(f"F = {m} kg * {a} m/s²")
-        print(f"F = {F:.0} N")
-
-    elif ges == "m":
-        frage = input("Wird a in km/h angegeben? (j/n): ").strip().lower()
-        if frage == "j":
-            a = kmh_to_ms(get("a"))
-        else:
-            a = get("a")
-        F = get("F")
-        try:
-            m = F / a
-            print(f"m = {F} N/ {a} m/s²")
-            print(f"m = {m:.4f} kg")
-        except ZeroDivisionError:
-            print("Die Beschleunigung a darf nicht 0 sein!")
-    
-    elif ges == "a":
-        m = get("m")
-        F = get("F")
-        try:
-            a = F / m
-            print(f"a = {F} N / {m} kg")
-            print(f"a = {a:.2f} m/s²")
-        except ZeroDivisionError:
-            print("Die Masse m darf nicht 0 sein!")
-
-    else:
-        fehler()
 
 def gewichts_kraft_rechner():
-    print("Formel: Fg = m * g")
-    print("Gesucht: Fg, m oder g")
-    
-    g_werte = {
-        "Erde": 9.81,
-        "Mond": 1.62,
-        "Mars": 3.71,
-        "Jupiter": 24.79
-    }
-    print("Typische Werte fü Ortsfaktor g [m/s²]:")
-    for planet, wert in g_werte.items():
-        print(f"{planet:<10} = {wert} m/s²")
-    print("")
-    ges = input("Was ist gesucht? (Fg, m oder g): ").strip().lower()
+    weight_force_calculator()
 
-    prompts = {
-        "Fg": "Gewichtskraft Fg (n): ",
-        "m": "Masse m (kg): ",
-        "g": "Ortsfaktor g (m/s²): "
-    }
-    def get(var):
-        return float(input(prompts[var]))
-    
-    if ges == "fg":
-        m = get("m")
-        g = get("g")
-        Fg = m * g
-        print(f"Fg = {m} kg * {g} m/s² ")
-        print(f"Fg = {Fg:.2f} N")
 
-    elif ges == "m":
-        Fg = get("Fg")
-        g = get("g")
-        try:
-            m = Fg / g
-            print(f"m = {Fg} N / {g} m/s²")
-            print(f"m = {m:.4f} kg")
-        except ZeroDivisionError:
-            print("Der Ortsfaktor g darf nicht 0 sein!")
-
-    elif ges == "g":
-        Fg = get("Fg")
-        m = get("m")
-        try:
-            g = Fg / m
-            print(f"g = {Fg} N / {m} kg")
-            print(f"g = {g:.2f} m/s²")
-        except ZeroDivisionError:
-            print("Die Masse m darf nicht 0 sein!")
-
-    else:
-        fehler()
-    
 def federkraft_rechner():
-    print("Formel: F = D * s")
-    print("------------------------\n")
-    ges = input("Was ist gesucht? (F, D oder s): ").strip().lower()
+    spring_force_calculator()
 
-    prompts = {
-        "F": "Federkraft F (N): ",
-        "D": "Federkonstante D (N/m): ",
-        "s": "Federweg s (m): "
-    }
-    def get(var):
-        return float(input(prompts[var]))
-    
-    if ges == "f":
-        D = get("D")
-        if input("Wird s in cm angegeben? (j/n): ").strip().lower() == "j":
-            s = cm_to_m(get("s"))
-        else:
-            s = get("s")
-        F = D * s
-        print(f"F = {D} N/m * {s} m")
-        print(f"F = {F:.2f} N")
-
-    elif ges == "d":
-        F = get("F")
-        if input("Wird s in cm angegeben? (j/n): ").strip().lower() == "j":
-            s = cm_to_m(get("s"))
-        else:
-            s = get("s")
-        try:
-            D = F / s
-            print(f"D = {F} N / {s} m")
-            print(f"D = {D:.2f} N/m")
-        except ZeroDivisionError:
-           print("Der Federweg s darf nicht 0 sein!") 
-    
-    elif ges == "s":
-        D = get("D")
-        F = get("F")
-        try:
-            s = F / D
-            print(f"s = {F} N / {D} N/m")
-            print(f"s = {s:.2f} m")
-        except ZeroDivisionError:
-            print("Die Federkonstante D darf nicht 0 sein!")
-    else:
-        fehler()
 
 def arbeit_rechner():
-    print("Formel: W = F * s")
-    print("------------------------\n")
+    work_calculator()
 
-    ges = input("Was ist gesucht? (W, F oder s): ").strip().lower()
-
-    prompts = {
-        "W": "Arbeit W (J): ",
-        "F": "Kraft F (N): ",
-        "s": "Weg s (m): "
-    }
-
-    def get(var):
-        return float(input(prompts[var]))
-
-    if ges == "w":
-        F = get("F")
-
-        if input("Wird s in cm angegeben? (j/n): ").strip().lower() == "j":
-            s = cm_to_m(get("s"))
-        else:
-            s = get("s")
-
-        W = F * s
-        print(f"W = {F} N * {s} m")
-        print(f"W = {W:.2f} J")
-
-    elif ges == "f":
-        W = get("W")
-
-        if input("Wird s in cm angegeben? (j/n): ").strip().lower() == "j":
-            s = cm_to_m(get("s"))
-        else:
-            s = get("s")
-
-        try:
-            F = W / s
-            print(f"F = {W} J / {s} m")
-            print(f"F = {F:.2f} N")
-        except ZeroDivisionError:
-            print("Der Weg s darf nicht 0 sein!")
-
-    elif ges == "s":
-        F = get("F")
-        W = get("W")
-
-        try:
-            s = W / F
-            print(f"s = {W} J / {F} N")
-            print(f"s = {s:.2f} m")
-        except ZeroDivisionError:
-            print("Die Kraft F darf nicht 0 sein!")
-
-    else:
-        fehler()
 
 def kinetische_energie_rechner():
-    print("Formel: Ek = 1/2 * m * v²")
-    print("------------------------\n")
-    ges = input("Was ist gesucht? (Ek, m oder v): ").strip(). lower()
+    kinetic_energy_calculator()
 
-    prompts = {
-        "Ek": "Kinetische Energie Ek (J): ",
-        "m": "Masse m (kg): ",
-        "v": "Geschwindigkeit v (m/s oder km/h): "
-    }
-
-    def get(var):
-        return float(input(prompts[var]))
-    
-    if ges == "ek":
-        m = get("m")
-        if input("Wird v in km/h angegeben? (j/n): ").strip().lower() == "j":
-            v = kmh_to_ms(get("v"))
-        else:
-            v = get("v")
-        Ek = 0.5 * m * v **2
-        print(f"Ek = 0.5 * {m} kg * ({v} m/s)²")
-        print("Ek = {Ek:.1f} J")
-
-    elif ges == "m":
-        Ek = get("Ek")
-        v = geschwindigkeit_check("v", prompts)
-        try:
-            m = (2 * Ek) / v**2
-            print(f"m = (2 * {Ek} J) / ({v} m/s)²")
-            print(f"m = {m:.4f} kg")
-        except ZeroDivisionError:
-            print("Die Geschwindigkeit v darf nicht 0 sein!")
-
-    elif ges == "v":
-        Ek = get("Ek")
-        m = get("m")
-        try:
-            v = (2 * Ek / m) ** 0.5
-            print(f"v = √((2 * {Ek} J) / {m} kg)")
-            print(f"v = {v:.2f} m/s")
-        except ZeroDivisionError:
-            print("Die Masse m darf nicht 0 sein!")
-    
-    else:
-        fehler()
 
 def potentielle_energie_rechner():
-    print("Formel: Ep = m * g * h")
-    print("------------------------\n")
-    ges = input("Was ist gesucht? (Ep, m, g oder h): ").strip().lower()
-    
-    g_werte = {
-        "Erde": 9.81,
-        "Mond": 1.62,
-        "Mars": 3.71,
-        "Jupiter": 24.79
-        }
-    
-    print("Typische Werte für Ortsfaktor g [m/s²]:")
-    for planet, wert in g_werte.items():
-        print(f"{planet:<10} = {wert} m/s²")
-    print("")
-    prompts = {
-        "Ep": "Potentielle Energie Ep (J): ",
-        "m": "Masse m (kg): ",
-        "g": "Ortsfaktor g (m/s²): ",
-        "h": "Höhe h (m): "
-    }
-    if ges == "ep":
-        m = get("m", prompts)
-        g = get("g", prompts)
-        h = get("h", prompts)
-        Ep = m * g * h
-        print(f"Ep = {m} kg * {g} m/s² * {h} m")
-        print(f"Ep = {Ep:.2f} J")
-    
-    elif ges == "m":
-        Ep = get("Ep", prompts)
-        g = get("g", prompts)
-        h = get("h", prompts)
-        try:
-            m = Ep / (g * h)
-            print(f"m = {Ep} J / ({g} m/s² * {h} m)")
-            print(f"m = {m:.4f} kg")
-        except ZeroDivisionError:
-            print("g * h darf nicht 0 ergeben!")
-    
-    elif ges == "g":
-        Ep = get("Ep", prompts)
-        m = get("m", prompts)
-        h = get("h", prompts)
-        try:
-            g = Ep / (m * h)
-            print(f"g = {Ep} J / ({m} kg * {h} m)")
-            print(f"g = {g:.2f} m/s²")
-        except ZeroDivisionError:
-            print("m * h darf nicht 0 ergeben!")
+    potential_energy_calculator()
 
-    elif ges == "h":
-        Ep = get("Ep", prompts)
-        m = get("m", prompts)
-        g = get("g", prompts)
-        try:
-            h = Ep / (m * g)
-            print(f"h = {Ep} J / ({m} kg * {g} m/s²)")
-            print(f"h = {h:.2f} m")
-        except ZeroDivisionError:
-            print("m * g darf nicht 0 ergeben!")
-
-    else:
-        fehler()
 
 def leistung_rechner():
-    print("Formel: P = W / t")
-    print("------------------------\n")
-    ges = input("Was ist gesucht? (P, W oder t): ").strip().lower()
+    power_calculator()
 
-    prompts = {
-        "P": "Leistung P (W): ",
-        "W": "Arbeit W (J): ",
-        "t": "Zeit t (s): "
-    }
 
-    if ges == "p":
-        W = get("W", prompts)
-        t = get("t", prompts)
-        try:
-            P = W / t
-            print(f"P = {W} J / {t} s")
-            print(f"P = {P:.2f} W")
-        except ZeroDivisionError:
-            print("Die Zeit t darf nicht 0 sein!")
-
-    elif ges == "w":
-        P = get("P", prompts)
-        t = get("t", prompts)
-        W = P * t
-        print(f"W = {P} W * {t} s")
-        print(f"W = {W:.2f} J")
-
-    elif ges == "t":
-        P = get("P", prompts)
-        W = get("W", prompts)
-        try:
-            t = W / P
-            print(f"t = {W} J / {P} W")
-            print(f"t = {t:.2f} s")
-        except ZeroDivisionError:
-            print("Die Leistung P darf nicht 0 sein!")
-
-    else:
-        fehler()
-        
-
-    
-
+def geschwindigkeit_check(var, prompts):
+    if ask_yes_no(f"Is {var} given in km/h? (j/n): "):
+        return kmh_to_ms(read_float(prompts[var]))
+    return read_float(prompts[var])

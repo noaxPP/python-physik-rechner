@@ -1,11 +1,10 @@
-
 <div align="center">
 
   <h1>🧮 Physics Calculator</h1>
 
   <p>
-    A growing physics calculator project where I integrate <br>
-    <strong>all formulas I learn in school</strong> – step by step.
+    A growing physics calculator project where I implement<br>
+    <strong>the formulas I learn in school</strong> step by step.
   </p>
 
   <p>
@@ -20,7 +19,7 @@
 
 <p>
   This project is a <strong>physics calculator</strong> that aims to include
-  all important formulas I cover in school physics lessons.
+  the most important formulas from school physics lessons.
 </p>
 
 <p>
@@ -30,15 +29,13 @@
 
 ---
 
-<h2>🧠 Topics (Planned & In Progress)</h2>
+<h2>🧠 Topics</h2>
 
 <ul>
-  <li>Mechanics (speed, acceleration, force)</li>
-  <li>Energy & Work</li>
-  <li>Electricity</li>
-  <li>Waves & Optics</li>
-  <li>Thermodynamics</li>
-  <li>More topics will be added over time</li>
+  <li>Mechanics (velocity, acceleration, force)</li>
+  <li>Work, energy and power</li>
+  <li>Density and pressure</li>
+  <li>Heat and phase changes</li>
 </ul>
 
 ---
@@ -47,11 +44,7 @@
 
 <p>
   This project is <strong>actively developed</strong>.
-  New formulas, features, and improvements will be added regularly.
-</p>
-
-<p>
-  Check the commit history to see the progress 🚧
+  New formulas, features and improvements are added regularly.
 </p>
 
 ---
@@ -60,8 +53,7 @@
 
 <ul>
   <li>Python (core logic)</li>
-  <li>HTML (documentation & presentation)</li>
-  <li>Git & GitHub (version control)</li>
+  <li>Git and GitHub (version control)</li>
 </ul>
 
 ---
@@ -69,8 +61,8 @@
 <h2>🎯 Goals</h2>
 
 <ul>
-  <li>Practice programming with real school content</li>
-  <li>Understand physics formulas more deeply</li>
+  <li>Practice programming with real school physics content</li>
+  <li>Understand formulas more deeply</li>
   <li>Build a solid foundation for future projects</li>
 </ul>
 
@@ -79,8 +71,8 @@
 <h2>📌 Note</h2>
 
 <p>
-  This project is primarily a <strong>learning project</strong> and written in <strong>german</strong>.
-  Accuracy and clarity are more important than complexity.
+  This project is mainly a <strong>learning project</strong> and is written in <strong>English</strong>.
+  Clarity and correctness are more important than complexity.
 </p>
 
 ---
@@ -88,7 +80,7 @@
 <div align="center">
 
   <p>
-    ⭐ If you find this project interesting, feel free to star the repository!
+    ⭐ If you find this project interesting, feel free to star the repository.
   </p>
 
 </div>
