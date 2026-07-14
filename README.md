@@ -54,6 +54,7 @@
 <ul>
   <li>Python (core logic)</li>
   <li>Git and GitHub (version control)</li>
+  <li>Flask based Backend</li>
 </ul>
 
 ---
@@ -64,6 +65,7 @@
   <li>Practice programming with real school physics content</li>
   <li>Understand formulas more deeply</li>
   <li>Build a solid foundation for future projects</li>
+  <li>Create a full web UI for the calculator</li>
 </ul>
 
 ---
